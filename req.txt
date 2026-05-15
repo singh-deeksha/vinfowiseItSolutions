@@ -1,0 +1,54 @@
+Project: Vinfowise IT Solutions Website
+
+Tech Stack:
+- React
+- Vite
+- Tailwind CSS
+- Framer Motion
+- Lucide React
+- React Router
+
+Node Requirements:
+- Node.js 20 or higher recommended
+- npm 10 or higher recommended
+
+Install:
+npm install
+
+Local Development:
+npm run dev -- --port 5173
+
+Local Production Preview:
+npm run build
+npm run preview -- --port 4173
+
+Production Build:
+npm run build
+
+Output Folder:
+dist
+
+Deployment:
+- Vercel supported
+- Netlify supported
+
+Vercel Settings:
+- Framework: Vite
+- Build Command: npm run build
+- Output Directory: dist
+
+Netlify Settings:
+- Build Command: npm run build
+- Publish Directory: dist
+
+Main Editable Content:
+src/data/siteContent.js
+
+Logo Files:
+public/vinfowise-logo.svg
+public/vinfowise-emblem.svg
+public/vinfowise-logo-horizontal.svg
+public/vinfowise-social-profile.svg
+
+Live Website:
+https://professional-website-generation-pro.vercel.app
