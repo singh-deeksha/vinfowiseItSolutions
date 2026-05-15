@@ -45,9 +45,6 @@ src/data/siteContent.js
 
 Update company name, services, projects, testimonials, stats, team, blogs, contact details, WhatsApp number, and social links there.
 
-## Deploy Online
-
-This project is ready for static hosting.
 
 ### Vercel
 
