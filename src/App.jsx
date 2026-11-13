@@ -463,14 +463,206 @@ function ContactPage() {
 
 function LegalPage({ title }) {
   const { company } = useSiteContent();
-  const privacyCopy = title === 'Privacy Policy'
-    ? 'VINI only saves a visitor’s name or email, conversation history, and potential project inquiries after the visitor explicitly agrees. If they decline, chat details remain only in page memory until the page is refreshed or closed. Consented records are stored in access-restricted systems and are available only to authorized Vinfowise administrators. Contact form and newsletter details are included in an email draft on your device and are sent only if you choose to send that email. Records are retained until removed by an administrator or upon a visitor’s deletion request. Visitors may request access or deletion by emailing us. The chatbot uses one essential, first-party, HttpOnly session cookie to recognize a returning chat visitor and retrieve only their consented conversation. It contains a signed random identifier, is retained for up to 30 days, and is not used for advertising or analytics. This site does not use advertising or analytics cookies.'
-    : 'We respect your privacy and aim to handle business and project information responsibly. Please contact us before sharing sensitive information if you have questions about how it will be used or protected.';
   const isCookiePolicy = title === 'Cookie Policy';
-  const content = isCookiePolicy
-    ? 'This site uses one essential, first-party, HttpOnly session cookie only when you open the VINI chatbot. It contains a signed random identifier that lets VINI recognize your returning chat session and retrieve details or history only if you previously consented to save them. The cookie expires after 30 days and is not used for advertising or analytics. This site does not use non-essential analytics or advertising cookies, so no cookie-preference banner is currently needed. You can clear the cookie in your browser settings; doing so will end access to the saved chat session on that browser. For privacy requests, contact us.'
-    : privacyCopy;
-  return <><SEO title={title} /><main className={pageWrap}><PageIntro eyebrow="Legal" title={title} description={`${title} information for ${company.name}. For questions, contact ${company.email}.`} /><p className={`mt-8 max-w-3xl leading-8 ${mutedText}`}>{content}</p><div className="mt-8"><Button href={`mailto:${company.email}`}>Contact us</Button></div></main></>;
+  const cookieCopy = 'This site uses one essential, first-party, HttpOnly session cookie only when you open the VINI chatbot. It contains a signed random identifier that lets VINI recognize your returning chat session and retrieve details or history only if you previously consented to save them. The cookie expires after 30 days and is not used for advertising or analytics. This site does not use non-essential analytics or advertising cookies, so no cookie-preference banner is currently needed. You can clear the cookie in your browser settings; doing so will end access to the saved chat session on that browser. For privacy requests, contact us.';
+  const privacySections = [
+    {
+      title: '1. Introduction',
+      paragraphs: [
+        'Welcome to Vinfowise IT Solutions (“Vinfowise,” “we,” “our,” or “us”).',
+        'We respect your privacy and are committed to protecting the personal information you share with us.',
+        'This Privacy Policy explains how we collect, use, store, protect, and process information when you visit our website, communicate with our team, use our AI assistant (VINI), or engage with our services.',
+        'By using our website, you acknowledge this Privacy Policy. Where required by applicable law, we will request your consent before collecting or processing personal information.',
+      ],
+    },
+    {
+      title: '2. Information We Collect',
+      paragraphs: ['We may collect the following categories of information:'],
+      lists: [
+        {
+          title: 'Personal Information',
+          items: [
+            'Full name',
+            'Email address',
+            'Phone number, if provided',
+            'Company or organization name',
+            'Information submitted through contact forms',
+            'Project requirements and business inquiries',
+          ],
+        },
+        {
+          title: 'Technical Information',
+          items: [
+            'IP address',
+            'Browser type and device information',
+            'Website usage and interaction data',
+            'Cookies and similar technologies, where enabled',
+            'Diagnostic and security logs',
+          ],
+        },
+        {
+          title: 'AI Chatbot Information',
+          items: [
+            'Messages and questions submitted during conversations',
+            'Name and email address, if voluntarily provided',
+            'Business inquiries and project requirements',
+            'Conversation history and session information',
+            'Feedback provided about chatbot responses',
+          ],
+        },
+      ],
+      closing: 'We encourage visitors not to share passwords, financial credentials, government identification numbers, or other highly sensitive information through the chatbot.',
+    },
+    {
+      title: '3. How We Use Your Information',
+      paragraphs: ['We may use collected information to:'],
+      items: [
+        'Respond to questions and inquiries',
+        'Provide requested services and consultations',
+        'Communicate about projects and business requirements',
+        'Operate and improve our website',
+        'Deliver and improve VINI AI functionality',
+        'Maintain relevant conversation context',
+        'Manage customer relationships and business leads',
+        'Protect against fraud, misuse, and unauthorized access',
+        'Comply with applicable legal obligations',
+      ],
+      closing: 'We do not automatically subscribe visitors to promotional communications simply because they interact with VINI or submit a business inquiry. Marketing communications will be sent only where permitted by applicable law and relevant consent or other lawful requirements have been satisfied.',
+    },
+    {
+      title: '4. VINI AI Assistant and Data Processing',
+      paragraphs: [
+        'VINI is an AI-powered virtual assistant designed to help visitors with general questions, technology-related topics, business inquiries, and Vinfowise services.',
+        'VINI is an artificial intelligence system, not a human representative.',
+        'When using VINI:',
+      ],
+      items: [
+        'Providing personal contact information is optional unless necessary for a specifically requested service.',
+        'Visitors may continue general conversations without submitting their name or email address.',
+        'Information provided may be processed to generate responses and maintain conversation context.',
+        'With appropriate permission, contact details may be stored to support inquiries and follow-up communication.',
+        'Conversations may be processed by third-party AI service providers that support VINI’s functionality.',
+        'AI-generated responses may occasionally contain inaccuracies and should be independently verified for important decisions.',
+      ],
+      closing: 'We aim to collect only information reasonably necessary for the purposes described in this policy.',
+    },
+    {
+      title: '5. Cookies and Website Analytics',
+      paragraphs: [
+        'Our website may use cookies or similar technologies to support website functionality, remember preferences, maintain sessions, analyze performance, and improve user experience. Where legally required, we will obtain consent before using non-essential cookies.',
+        'The site currently uses one essential, first-party, HttpOnly cookie for VINI sessions. It helps recognize a returning chat visitor, expires after up to 30 days, and is not used for advertising or analytics. We do not currently use advertising or analytics cookies. Visitors may manage or clear cookies through their browser settings.',
+      ],
+    },
+    {
+      title: '6. Information Sharing and Third-Party Services',
+      paragraphs: [
+        'We do not sell personal information to advertisers or data brokers.',
+        'We may share limited information with trusted service providers when necessary for website hosting, database management, AI processing, analytics, communications, or other authorized business operations. Such sharing is subject to applicable legal requirements and appropriate safeguards.',
+        'We may also disclose information when required by law or to protect the security, rights, or integrity of our services.',
+      ],
+    },
+    {
+      title: '7. Data Security',
+      paragraphs: ['We take reasonable technical and organizational measures to protect personal information against unauthorized access, disclosure, alteration, and loss. These measures may include:'],
+      items: [
+        'Secure communication protocols',
+        'Access restrictions and authentication',
+        'Database security controls',
+        'Monitoring and security updates',
+        'Limited access to customer information',
+        'Appropriate backup and recovery procedures',
+      ],
+      closing: 'However, no internet-based service or electronic storage system can guarantee absolute security.',
+    },
+    {
+      title: '8. Data Retention',
+      paragraphs: [
+        'We retain personal information only for as long as reasonably necessary to fulfill the purposes described in this Privacy Policy, subject to applicable legal, contractual, security, and operational requirements.',
+        'Chatbot conversations, contact details, and business inquiries may have different retention periods depending on their purpose.',
+        'When information is no longer required, we will delete, anonymize, or otherwise securely dispose of it in accordance with applicable requirements.',
+      ],
+    },
+    {
+      title: '9. Your Privacy Rights',
+      paragraphs: ['Depending on applicable law, you may have the right to:'],
+      items: [
+        'Request access to information we hold about you',
+        'Request correction of inaccurate personal information',
+        'Request deletion of eligible personal information',
+        'Withdraw consent where processing is based on consent',
+        'Opt out of applicable marketing communications',
+        'Raise concerns about how your information is processed',
+      ],
+      closing: 'We will review and respond to privacy requests in accordance with applicable legal requirements. Certain information may need to be retained where required or permitted by law.',
+    },
+    {
+      title: '10. International Data Processing',
+      paragraphs: [
+        'Some technology providers supporting our website or AI services may process information outside your country.',
+        'Where applicable, we will take reasonable steps to ensure that international processing and transfers comply with relevant data protection requirements.',
+      ],
+    },
+    {
+      title: '11. Children’s Privacy',
+      paragraphs: [
+        'Our website and services are primarily intended for general business and professional audiences.',
+        'We do not knowingly seek to collect children’s personal information without appropriate authorization.',
+        'If we become aware that children’s information has been collected in circumstances requiring deletion or additional consent, we will take appropriate action in accordance with applicable law.',
+      ],
+    },
+    {
+      title: '12. Third-Party Websites',
+      paragraphs: [
+        'Our website may contain links to external websites or services.',
+        'We are not responsible for the privacy practices, security measures, or content of independently operated third-party websites. We encourage visitors to review the privacy policies of those services.',
+      ],
+    },
+    {
+      title: '13. Changes to This Privacy Policy',
+      paragraphs: [
+        'We may update this Privacy Policy periodically to reflect changes in our services, technology, business practices, or applicable legal requirements.',
+        'Any updated version will be published on our website with a revised effective date. Where required, we will provide additional notice or obtain renewed consent for material changes.',
+      ],
+    },
+  ];
+  const content = isCookiePolicy ? (
+    <p className={`mt-8 max-w-3xl leading-8 ${mutedText}`}>{cookieCopy}</p>
+  ) : title === 'Privacy Policy' ? (
+    <article className={`mt-8 max-w-3xl space-y-8 leading-8 ${mutedText}`}>
+      <p><strong>Effective Date:</strong> November 14, 2026</p>
+      {privacySections.map(section => (
+        <section key={section.title}>
+          <h2 className="mb-3 text-xl font-bold text-[#493a2e]">{section.title}</h2>
+          {section.paragraphs?.map(paragraph => <p key={paragraph} className="mb-3">{paragraph}</p>)}
+          {section.lists?.map(list => (
+            <div key={list.title} className="mb-4">
+              <h3 className="font-semibold text-[#493a2e]">{list.title}</h3>
+              <ul className="list-disc space-y-1 pl-6">
+                {list.items.map(item => <li key={item}>{item}</li>)}
+              </ul>
+            </div>
+          ))}
+          {section.items && <ul className="list-disc space-y-1 pl-6">{section.items.map(item => <li key={item}>{item}</li>)}</ul>}
+          {section.closing && <p className="mt-3">{section.closing}</p>}
+        </section>
+      ))}
+      <section>
+        <h2 className="mb-3 text-xl font-bold text-[#493a2e]">14. Contact Us</h2>
+        <p>For questions, concerns, or requests regarding this Privacy Policy or the processing of personal information, please contact:</p>
+        <address className="mt-3 not-italic">
+          <strong>Vinfowise IT Solutions</strong><br />
+          Website: <Link to="/contact" className="font-semibold text-[#46797e] underline underline-offset-2">Contact us</Link><br />
+          Email: <a href="mailto:vinfowiseitsolutions@gmail.com" className="font-semibold text-[#46797e] underline underline-offset-2">vinfowiseitsolutions@gmail.com</a><br />
+          Location: Mohali
+        </address>
+        <p className="mt-3">We will make reasonable efforts to address privacy inquiries promptly and in accordance with applicable law.</p>
+      </section>
+      <p>© 2026 Vinfowise IT Solutions. All rights reserved.</p>
+    </article>
+  ) : (
+    <p className={`mt-8 max-w-3xl leading-8 ${mutedText}`}>We respect your privacy and aim to handle business and project information responsibly. Please contact us before sharing sensitive information if you have questions about how it will be used or protected.</p>
+  );
+  return <><SEO title={title} /><main className={pageWrap}><PageIntro eyebrow="Legal" title={title} description={`${title} information for ${company.name}. For questions, contact ${company.email}.`} />{content}<div className="mt-8"><Button href={`mailto:${company.email}`}>Contact us</Button></div></main></>;
 }
 
 function NotFoundPage() {
