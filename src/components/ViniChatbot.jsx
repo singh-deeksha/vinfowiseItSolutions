@@ -60,7 +60,7 @@ function normalizeText(str) {
 }
 
 export default function ViniChatbot({ triggerClassName = '' }) {
-  const { viniAssistant, company, services, portfolioProjects, teamMembers, devProcess, techStack, getWhatsAppUrl } = useSiteContent();
+  const { viniAssistant, company, portfolioProjects, teamMembers, devProcess, techStack } = useSiteContent();
 
   const botName = viniAssistant?.botName || 'Vini';
   const botAvatar = viniAssistant?.botAvatar || 'https://cdn-icons-png.flaticon.com/512/11260/11260829.png';
