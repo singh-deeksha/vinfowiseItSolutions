@@ -510,7 +510,7 @@ export const teamMembers = [
   {
     name: "Deeksha Singh",
     // title: "Quality Assurance Architect",
-    leadershipRole: "Owner & Founder",
+    leadershipRole: "CEO & Founder",
     // specialty: "Manual and automation testing",
     bio: "My vision is simple: build something that matters, work with people who believe in it, and let our work speak for itself.",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80",
@@ -518,7 +518,7 @@ export const teamMembers = [
   {
     name: "Akshay Chandla",
     // title: "Chief Technology Officer (CTO)",
-    leadershipRole: "Co-owner & Co-founder",
+    leadershipRole: "COO",
     // specialty: "Technology strategy and architecture",
     bio: "Great ideas create possibilities. Great execution turns them into reality.",
     image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80",
@@ -526,7 +526,7 @@ export const teamMembers = [
   {
     name: "Paswn Parwind",
     // title: "Senior Full Stack & AI Engineer",
-    leadershipRole: "",
+    leadershipRole: "Co-Founder",
     // specialty: "Full stack development and AI solutions",
     bio: "Technology is more than writing code. It's about solving problems and creating possibilities.",
     image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80",
