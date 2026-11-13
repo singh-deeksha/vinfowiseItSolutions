@@ -155,11 +155,11 @@ export default function ViniChatbot({ triggerClassName = '' }) {
     }
 
     if (/chrome|extension|browser/.test(text)) {
-      return 'Yes — Vinfowise builds Chrome extensions for browser workflows, automation, saved preferences, popup UI, and task shortcuts.\n\nThis is useful when your process happens repeatedly inside Chrome and needs to be faster or more reliable.';
+      return 'Yes, Vinfowise builds Chrome extensions for browser workflows, automation, saved preferences, popup UI, and task shortcuts.\n\nThis helps make repeated Chrome tasks faster and more reliable.';
     }
 
     if (/automation|workflow|crm|follow up|reminder|task/.test(text)) {
-      return 'Yes — Vinfowise builds workflow automation systems that reduce repetitive manual work.\n\nThis includes:\n• CRM automation\n• Lead management & WhatsApp follow-ups\n• Email workflows\n• Data synchronization\n• Chrome extension workflows\n• Scheduled jobs';
+      return 'Yes, Vinfowise builds workflow automation systems that reduce repetitive manual work.\n\nServices include:\n• CRM automation\n• Lead management & WhatsApp follow-ups\n• Email workflows\n• Data synchronization\n• Chrome extension workflows\n• Scheduled jobs';
     }
 
     if (/ai|chatbot|bot|assistant|knowledge base/.test(text)) {
@@ -238,7 +238,7 @@ export default function ViniChatbot({ triggerClassName = '' }) {
           setIsOpen(prev => !prev);
           setHasUnread(false);
         }}
-        className={`focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[#dfe8d7] via-[#f2e7c9] to-[#e6bd68] px-4 py-3 text-sm font-bold text-[#493a2e] shadow-lg shadow-[#76634a]/15 transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#c6953b]/25 ${triggerClassName}`}
+        className={`focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[#dfe8d7] via-[#f2e7c9] to-[#e6bd68] px-4 py-3 text-sm font-bold text-[#493a2e] transition-colors ${triggerClassName}`}
         aria-label={isOpen ? `Close ${botName} chat` : `Open ${botName} chat`}
         aria-expanded={isOpen}
       >
@@ -261,7 +261,7 @@ export default function ViniChatbot({ triggerClassName = '' }) {
       {/* Floating Chat Modal */}
       {isOpen && (
         <section
-          className="fixed bottom-20 right-3 z-[70] flex h-[min(620px,calc(100vh-96px))] w-[calc(100vw-24px)] max-w-[410px] flex-col overflow-hidden rounded-3xl border border-[#e3dfd1] bg-[#fffdf8] shadow-2xl shadow-[#76634a]/20 sm:bottom-24 sm:right-6"
+          className="fixed bottom-20 right-3 z-[70] flex h-[min(620px,calc(100vh-96px))] w-[calc(100vw-24px)] max-w-[410px] flex-col overflow-hidden rounded-2xl border border-[#e3dfd1] bg-[#fffdf8] sm:bottom-24 sm:right-6"
           aria-label={`${botName} Assistant`}
         >
           {/* Header */}

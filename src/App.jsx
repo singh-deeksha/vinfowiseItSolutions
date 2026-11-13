@@ -14,19 +14,19 @@ import SEO from './components/SEO.jsx';
 import { useSiteContent } from './context/SiteContentContext.jsx';
 
 const pageWrap = 'container-wide py-14 sm:py-20 lg:py-24';
-const cardClass = 'rounded-3xl border border-[#e3dfd1] bg-[#fffdf8] p-6 shadow-xl shadow-[#76634a]/10 backdrop-blur-sm';
+const cardClass = 'rounded-2xl border border-[#e3dfd1] bg-[#fffdf8] p-6';
 const mutedText = 'text-[#706557]';
 
 function Eyebrow({ children }) {
   return <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-[#8c794d]">{children}</p>;
 }
 
-function PageIntro({ eyebrow, title, description, centered = true }) {
+function PageIntro({ eyebrow, title, description }) {
   return (
-    <div className={`${centered ? 'mx-auto text-center' : ''} max-w-4xl`}>
+    <div className="max-w-4xl">
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-tight text-[#493a2e] sm:text-5xl lg:text-7xl">{title}</h1>
-      {description && <p className={`mt-6 max-w-3xl text-lg leading-8 ${mutedText} ${centered ? 'mx-auto' : ''}`}>{description}</p>}
+      {description && <p className={`mt-6 max-w-3xl text-lg leading-8 ${mutedText}`}>{description}</p>}
     </div>
   );
 }
@@ -79,9 +79,9 @@ function HeroSection() {
         </div>
         <div className="space-y-5">
           <CommandCenterCard />
-          <div className="grid gap-3 sm:grid-cols-3">
-            {metrics.slice(0, 3).map(metric => (
-              <div key={metric.label} className="rounded-2xl border border-[#e3dfd1] bg-[#fffdf8]/80 p-4">
+          <div className="grid gap-4 border-t border-[#d9d4c6] pt-4 sm:grid-cols-3">
+            {metrics.slice(0, 3).map((metric, index) => (
+              <div key={metric.label} className={index > 0 ? 'sm:border-l sm:border-[#d9d4c6] sm:pl-4' : ''}>
                 <p className="text-xl font-black text-[#493a2e]">{metric.value}</p>
                 <p className="mt-1 text-xs leading-5 text-[#706557]">{metric.label}</p>
               </div>
@@ -96,17 +96,17 @@ function HeroSection() {
 function ServiceCards({ limit }) {
   const { services } = useSiteContent();
   return (
-    <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="mt-9 grid gap-4 sm:grid-cols-2">
       {services.slice(0, limit || services.length).map(service => {
         const Icon = service.icon;
         return (
-          <Link key={service.slug} to={service.path} className={`${cardClass} group transition duration-200 hover:-translate-y-1 hover:border-[#c89a43] hover:bg-[#fffaf0]`}>
+          <Link key={service.slug} to={service.path} className={`${cardClass} group transition-colors duration-200 hover:border-[#c89a43]`}>
             <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-[#e8eee2] text-[#75886c]">
               <Icon size={25} />
             </span>
             <h3 className="mt-5 text-xl font-bold text-[#493a2e]">{service.title}</h3>
             <p className={`mt-3 text-sm leading-7 ${mutedText}`}>{service.summary}</p>
-            <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#9a752c]">View Details <ArrowRight size={16} className="transition group-hover:translate-x-1" /></span>
+            <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#9a752c]">View Details <ArrowRight size={16} /></span>
           </Link>
         );
       })}
@@ -123,7 +123,7 @@ function Principles({
     <section className="border-y border-[#e3dfd1] bg-[#eef0e8]">
       <div className={pageWrap}>
         <SectionHeading eyebrow="Operating principles" title={title} description={description} />
-        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-9 grid gap-4 sm:grid-cols-2">
           {items.map(item => {
             const Icon = item.icon;
             return (
@@ -162,7 +162,7 @@ function CaseStudyCards({ limit }) {
 function TeamCards() {
   const { teamMembers } = useSiteContent();
   return (
-    <div className="mt-9 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+    <div className="mt-9 grid gap-5 md:grid-cols-2">
       {teamMembers.map(member => (
         <article key={member.name} className={`${cardClass} overflow-hidden p-0`}>
           <div className="h-1 bg-gradient-to-r from-[#94a987] via-[#c69a43] to-[#f0cf83]" />
@@ -267,14 +267,17 @@ function AboutPage() {
       <main>
         <section className="bg-gradient-to-br from-[#e8eee2] via-[#f5f0e2] to-[#f7e4c2]">
           <div className={pageWrap}>
-            <PageIntro eyebrow="About us" title="A practical digital transformation team for growing businesses." description={about.description} centered={false} />
+            <PageIntro eyebrow="About us" title="A practical digital transformation team for growing businesses." description={about.description} />
             <StatsGrid metrics={metrics} />
           </div>
         </section>
         <section className={pageWrap}>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="divide-y divide-[#e3dfd1]">
             {[['Mission', about.mission], ['Vision', about.vision], ['Values', about.values]].map(([title, text]) => (
-              <article key={title} className={cardClass}><h2 className="text-xl font-bold text-[#493a2e]">{title}</h2><p className={`mt-3 leading-7 ${mutedText}`}>{text}</p></article>
+              <article key={title} className="grid gap-2 py-6 first:pt-0 md:grid-cols-[12rem_1fr] md:gap-8">
+                <h2 className="text-xl font-bold text-[#493a2e]">{title}</h2>
+                <p className={`leading-7 ${mutedText}`}>{text}</p>
+              </article>
             ))}
           </div>
         </section>
@@ -286,8 +289,13 @@ function AboutPage() {
         </section>
         <section className={pageWrap}>
           <SectionHeading eyebrow="Achievements" title="Built through steady delivery and expanding trust." />
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {milestones.map(milestone => <article key={milestone.year} className={cardClass}><p className="text-2xl font-black text-[#a47c2f]">{milestone.year}</p><p className={`mt-3 leading-7 ${mutedText}`}>{milestone.title}</p></article>)}
+          <div className="mt-8 divide-y divide-[#e3dfd1] border-y border-[#e3dfd1]">
+            {milestones.map(milestone => (
+              <article key={milestone.year} className="grid gap-2 py-5 sm:grid-cols-[8rem_1fr] sm:gap-8">
+                <p className="text-lg font-bold text-[#a47c2f]">{milestone.year}</p>
+                <p className={`leading-7 ${mutedText}`}>{milestone.title}</p>
+              </article>
+            ))}
           </div>
         </section>
         <Principles items={whyChooseUs} title="How we keep enterprise delivery reliable." description="Think deeply, communicate clearly, protect trust, and deliver with care." />
@@ -310,8 +318,13 @@ function ServicesPage() {
         <ServiceCards />
         <section className="mt-16">
           <SectionHeading eyebrow="Our process" title="A clear path from discovery to delivery." />
-          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {devProcess.map((step, index) => <div key={step} className={`${cardClass} flex items-center gap-3`}><span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#e8eee2] font-black text-[#718365]">{String(index + 1).padStart(2, '0')}</span><span className="font-semibold text-[#493a2e]">{step}</span></div>)}
+          <div className="mt-7 grid gap-x-8 sm:grid-cols-2">
+            {devProcess.map((step, index) => (
+              <div key={step} className="flex items-center gap-4 border-t border-[#e3dfd1] py-4">
+                <span className="text-sm font-bold tracking-widest text-[#a47c2f]">{String(index + 1).padStart(2, '0')}</span>
+                <span className="font-semibold text-[#493a2e]">{step}</span>
+              </div>
+            ))}
           </div>
         </section>
       </main>
@@ -333,8 +346,13 @@ function ServiceDetailPage() {
         <div className={pageWrap}><PageIntro eyebrow={service.title} title={detail.hero} description={detail.description} /></div>
       </section>
       <main className={pageWrap}>
-        <div className="grid gap-5 md:grid-cols-2">
-          {[['What we cover', detail.cover], ['Expected outcomes', detail.outcomes], ['Project deliverables', detail.deliverables], ['Technology and tools', detail.stack]].map(([heading, items]) => <section key={heading} className={cardClass}><h2 className="text-xl font-bold text-[#493a2e]">{heading}</h2><ul className="mt-4 space-y-3">{items.map(item => <li key={item} className="flex gap-2 text-[#706557]"><CheckCircle2 size={18} className="mt-0.5 shrink-0 text-[#8c794d]" />{item}</li>)}</ul></section>)}
+        <div className="grid gap-x-10 md:grid-cols-2">
+          {[['What we cover', detail.cover], ['Expected outcomes', detail.outcomes], ['Project deliverables', detail.deliverables], ['Technology and tools', detail.stack]].map(([heading, items]) => (
+            <section key={heading} className="border-t border-[#e3dfd1] py-6">
+              <h2 className="text-xl font-bold text-[#493a2e]">{heading}</h2>
+              <ul className="mt-4 space-y-3">{items.map(item => <li key={item} className="flex gap-2 text-[#706557]"><CheckCircle2 size={18} className="mt-0.5 shrink-0 text-[#8c794d]" />{item}</li>)}</ul>
+            </section>
+          ))}
         </div>
       </main>
       <CallToAction />
@@ -354,11 +372,11 @@ function PortfolioPage() {
       <main className={pageWrap}>
         <SectionHeading eyebrow="Case studies and project gallery" title="Selected work" />
         <div className="mt-7 flex flex-wrap gap-2">{categories.map(category => <button key={category} type="button" onClick={() => setActiveCategory(category)} className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${activeCategory === category ? 'border-[#c89a43] bg-[#f6e5bb] text-[#76551b]' : 'border-[#ded8c8] text-[#706557] hover:border-[#b7a982]'}`}>{category}</button>)}</div>
-        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-x-8 md:grid-cols-2">
           {projects.map(project => (
-            <article key={project.title} className={`${cardClass} overflow-hidden p-0`}>
-              <img src={project.image} alt="" className="h-48 w-full object-cover" loading="lazy" />
-              <div className="p-6"><p className="text-xs font-bold uppercase tracking-wider text-[#75886c]">{project.category}</p><h2 className="mt-2 text-xl font-bold text-[#493a2e]">{project.title}</h2><p className={`mt-3 text-sm leading-6 ${mutedText}`}>{project.description}</p><p className="mt-4 text-sm font-semibold text-[#9a752c]">{project.metric}</p></div>
+            <article key={project.title} className="border-t border-[#e3dfd1] py-6">
+              <img src={project.image} alt="" className="h-56 w-full rounded-xl object-cover" loading="lazy" />
+              <div className="pt-5"><p className="text-xs font-bold uppercase tracking-wider text-[#75886c]">{project.category}</p><h2 className="mt-2 text-xl font-bold text-[#493a2e]">{project.title}</h2><p className={`mt-3 text-sm leading-6 ${mutedText}`}>{project.description}</p><p className="mt-4 text-sm font-semibold text-[#9a752c]">{project.metric}</p></div>
             </article>
           ))}
         </div>
@@ -375,8 +393,8 @@ function InsightsPage() {
       <SEO title="Insights" description="Technology insights, automation ideas, and practical delivery guidance." />
       <section className="bg-gradient-to-br from-[#e8eee2] via-[#f5f0e2] to-[#f7e4c2]"><div className={pageWrap}><PageIntro eyebrow="Insights" title="Technology insights for better business decisions." description="Automation ideas, engineering practices, and practical delivery guidance for growing teams." /></div></section>
       <main className={pageWrap}>
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {blogPosts.map(post => <article key={post.slug} className={cardClass}><p className="text-sm font-bold text-[#8c794d]">{post.tag} · {post.date}</p><h2 className="mt-3 text-xl font-bold text-[#493a2e]">{post.title}</h2><p className={`mt-3 leading-7 ${mutedText}`}>{post.excerpt}</p><details className="mt-4"><summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-semibold text-[#75886c]">Read insight <ChevronDown size={16} /></summary><p className={`mt-3 text-sm leading-7 ${mutedText}`}>{post.content}</p></details></article>)}
+        <div className="grid gap-x-8 md:grid-cols-2">
+          {blogPosts.map(post => <article key={post.slug} className="border-t border-[#e3dfd1] py-6"><p className="text-sm font-bold text-[#8c794d]">{post.tag} · {post.date}</p><h2 className="mt-3 text-xl font-bold text-[#493a2e]">{post.title}</h2><p className={`mt-3 leading-7 ${mutedText}`}>{post.excerpt}</p><details className="mt-4"><summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-semibold text-[#75886c]">Read insight <ChevronDown size={16} /></summary><p className={`mt-3 text-sm leading-7 ${mutedText}`}>{post.content}</p></details></article>)}
         </div>
         <section className="mt-16">
           <SectionHeading eyebrow="FAQs" title="Answers to common questions." />
@@ -436,7 +454,7 @@ function ContactPage() {
 
 function LegalPage({ title }) {
   const { company } = useSiteContent();
-  return <><SEO title={title} /><main className={pageWrap}><PageIntro eyebrow="Legal" title={title} description={`${title} information for ${company.name}. For questions, contact ${company.email}.`} centered={false} /><p className={`mt-8 max-w-3xl leading-8 ${mutedText}`}>We respect your privacy and aim to handle business and project information responsibly. Please contact us before sharing sensitive information if you have questions about how it will be used or protected.</p><div className="mt-8"><Button href={`mailto:${company.email}`}>Contact us</Button></div></main></>;
+  return <><SEO title={title} /><main className={pageWrap}><PageIntro eyebrow="Legal" title={title} description={`${title} information for ${company.name}. For questions, contact ${company.email}.`} /><p className={`mt-8 max-w-3xl leading-8 ${mutedText}`}>We respect your privacy and aim to handle business and project information responsibly. Please contact us before sharing sensitive information if you have questions about how it will be used or protected.</p><div className="mt-8"><Button href={`mailto:${company.email}`}>Contact us</Button></div></main></>;
 }
 
 function NotFoundPage() {

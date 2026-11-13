@@ -2,7 +2,7 @@ import { Activity, CheckCircle2, Zap, BarChart2 } from 'lucide-react';
 
 export default function CommandCenterCard() {
   return (
-    <div className="rounded-3xl border border-[#e3dfd1] bg-[#fffdf8]/95 p-6 shadow-2xl shadow-[#76634a]/15 backdrop-blur-xl sm:p-7">
+    <div className="rounded-2xl border border-[#e3dfd1] bg-[#fffdf8] p-6 sm:p-7">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-[#ebe7dc] pb-4">
         <div>
@@ -10,35 +10,24 @@ export default function CommandCenterCard() {
           <p className="text-xs text-[#817766]">Projects, leads, automation, and delivery</p>
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f6e8c9] px-2.5 py-1 text-xs font-semibold text-[#89651f]">
-          <span className="size-1.5 rounded-full bg-[#c6953b] animate-pulse" />
+          <span className="size-1.5 rounded-full bg-[#c6953b]" />
           Live Preview
         </span>
       </div>
 
       {/* Metrics Row */}
-      <div className="mt-5 grid grid-cols-3 gap-3">
-        <div className="rounded-xl border border-[#e6e2d7] bg-[#f8f8f2] p-3.5">
-          <div className="flex items-center text-[#75886c]">
-            <Activity size={16} />
-          </div>
-          <div className="mt-2 text-xl font-black text-[#493a2e]">24</div>
-          <div className="text-xs text-[#817766]">Leads</div>
+      <div className="mt-5 grid grid-cols-3 divide-x divide-[#e3dfd1] border-y border-[#e3dfd1] py-3">
+        <div className="px-3 first:pl-0">
+          <div className="flex items-center gap-2 text-[#75886c]"><Activity size={16} /><span className="text-xl font-black text-[#493a2e]">24</span></div>
+          <div className="mt-1 text-xs text-[#817766]">Leads</div>
         </div>
-
-        <div className="rounded-xl border border-[#e6e2d7] bg-[#f8f8f2] p-3.5">
-          <div className="flex items-center text-[#75886c]">
-            <CheckCircle2 size={16} />
-          </div>
-          <div className="mt-2 text-xl font-black text-[#493a2e]">91%</div>
-          <div className="text-xs text-[#817766]">Tasks</div>
+        <div className="px-3">
+          <div className="flex items-center gap-2 text-[#75886c]"><CheckCircle2 size={16} /><span className="text-xl font-black text-[#493a2e]">91%</span></div>
+          <div className="mt-1 text-xs text-[#817766]">Tasks</div>
         </div>
-
-        <div className="rounded-xl border border-[#e6e2d7] bg-[#f8f8f2] p-3.5">
-          <div className="flex items-center text-[#b1873b]">
-            <Zap size={16} />
-          </div>
-          <div className="mt-2 text-xl font-black text-[#493a2e]">2.4x</div>
-          <div className="text-xs text-[#817766]">Speed</div>
+        <div className="px-3 last:pr-0">
+          <div className="flex items-center gap-2 text-[#b1873b]"><Zap size={16} /><span className="text-xl font-black text-[#493a2e]">2.4x</span></div>
+          <div className="mt-1 text-xs text-[#817766]">Speed</div>
         </div>
       </div>
 

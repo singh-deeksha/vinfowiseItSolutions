@@ -41,7 +41,6 @@
     background: transparent;
     border: 0;
     padding: 0;
-    animation: 2.4s ease-in-out infinite soft-pulse;
     position: relative;
   }
   .ai-unread-dot {
@@ -70,20 +69,11 @@
   }
 }
 
-@keyframes soft-pulse {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-3px) scale(1.04);
-  }
-}
-
 body {
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Fraunces', serif;
 }

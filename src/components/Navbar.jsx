@@ -22,7 +22,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#e3dfd1] bg-[#fffdf8]/95 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-[#e3dfd1] bg-[#fffdf8]">
       <div className="container-wide flex min-h-20 items-center justify-between gap-2 sm:gap-4">
         {/* Brand Logo & Name */}
         <Link
@@ -90,7 +90,7 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div
           id="mobile-navigation"
-          className="border-t border-[#e3dfd1] bg-[#fffdf8] p-4 shadow-xl lg:hidden"
+          className="border-t border-[#e3dfd1] bg-[#fffdf8] p-4 lg:hidden"
         >
           <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
             {navItems.map(item => {

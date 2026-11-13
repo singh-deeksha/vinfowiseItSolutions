@@ -3,11 +3,11 @@ import { ArrowRight } from 'lucide-react';
 
 const variantStyles = {
   primary:
-    'rounded-xl bg-[#c6953b] text-[#fffdf8] shadow-lg shadow-[#9c762f]/20 hover:bg-[#b98731] hover:scale-[1.02]',
+    'rounded-xl bg-[#c6953b] text-[#fffdf8] hover:bg-[#b98731]',
   secondary:
     'rounded-xl border border-[#d7d4c7] bg-[#fffdf8] text-[#554632] hover:border-[#9ba98d] hover:bg-[#edf0e7] hover:text-[#65785b]',
   dark:
-    'rounded-xl bg-[#e6ebdf] text-[#4c5d44] hover:bg-[#d8e1cf] hover:scale-[1.02]',
+    'rounded-xl bg-[#e6ebdf] text-[#4c5d44] hover:bg-[#d8e1cf]',
 };
 
 export default function Button({
