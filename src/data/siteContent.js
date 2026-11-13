@@ -568,10 +568,11 @@ export const blogPosts = [
 ];
 
 export const faqs = [
-  ["Can you sign an NDA before project discussions?", "Yes. We support NDA-friendly discovery and secure collaboration for enterprise clients."],
-  ["Do you work with clients outside your city?", "Yes. Vinfowise IT Solutions supports remote discovery, online meetings, and flexible project communication."],
-  ["Can this website connect to a CMS later?", "Yes. The content is centralized so a CMS, admin panel, CRM, or API can be integrated later."],
-  ["Which engagement model should we choose?", "We recommend dedicated teams for long-term products, fixed scope for defined builds, and hourly support for ongoing iteration."],
+  ["01 How can Vinfowise turn my idea into a digital product?", "We start by understanding your idea, goals, users, and priorities. From there, we help shape the requirements and plan a practical path through design, development, testing, and launch. The right team and timeline depend on your project’s scope."],
+  ["02 Can you build a solution tailored to my business?", "Yes. We plan websites, software, mobile apps, automation, and AI solutions around your business needs, workflows, and users. We’ll discuss your requirements and recommend a suitable approach before development begins."],
+  ["03 What makes Vinfowise different from other IT companies?", "We focus on clear communication, thoughtful planning, dependable delivery, and technology that solves real business needs. Our team works with you to choose a practical solution and keep the process understandable from discovery through launch."],
+  ["04 Can Vinfowise help modernize my existing software?", "Yes. We can review your current software and help plan improvements such as a refreshed user experience, new features, integrations, performance updates, or a staged rebuild. We’ll first understand your system and priorities so the modernization plan fits your needs."],
+  ["05 How do you ensure the quality of your solutions?", "Quality is considered throughout the project, from understanding requirements and reviewing the user experience to testing functionality and checking the finished work. QA support can include functional, regression, and automation testing, based on the project."],
 ];
 
 export const contactCards = [

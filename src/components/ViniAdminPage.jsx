@@ -204,7 +204,7 @@ export default function ViniAdminPage() {
                 </div>
                 <div className="mt-5 flex flex-wrap items-center gap-3">
                   <label htmlFor="customer-status" className="text-sm font-semibold text-[#625543]">Status</label>
-                  <select id="customer-status" value={selected.status} onChange={event => updateCustomer(selected, { status: event.target.value })} className="rounded-lg border border-[#ded8c8] bg-[#fffdf8] px-3 py-2 text-sm">
+                  <select id="customer-status" value={selected.status} onChange={event => updateCustomer(selected, { status: event.target.value })} className="min-w-0 max-w-full box-border rounded-lg border border-[#ded8c8] bg-[#fffdf8] px-3 py-2 text-sm">
                     {statuses.map(status => <option key={status} value={status}>{status}</option>)}
                   </select>
                   {selected.is_lead && <span className="text-sm font-semibold text-[#89651f]">Potential lead · score {selected.lead_score}</span>}
