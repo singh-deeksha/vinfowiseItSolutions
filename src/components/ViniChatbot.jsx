@@ -238,7 +238,7 @@ export default function ViniChatbot({ triggerClassName = '' }) {
           setIsOpen(prev => !prev);
           setHasUnread(false);
         }}
-        className={`focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-blue-700/25 transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-700/30 ${triggerClassName}`}
+        className={`focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[#dfe8d7] via-[#f2e7c9] to-[#e6bd68] px-4 py-3 text-sm font-bold text-[#493a2e] shadow-lg shadow-[#76634a]/15 transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#c6953b]/25 ${triggerClassName}`}
         aria-label={isOpen ? `Close ${botName} chat` : `Open ${botName} chat`}
         aria-expanded={isOpen}
       >
@@ -261,11 +261,11 @@ export default function ViniChatbot({ triggerClassName = '' }) {
       {/* Floating Chat Modal */}
       {isOpen && (
         <section
-          className="fixed bottom-20 right-3 z-[70] flex h-[min(620px,calc(100vh-96px))] w-[calc(100vw-24px)] max-w-[410px] flex-col overflow-hidden rounded-3xl border border-cyan-100 bg-white shadow-2xl shadow-slate-950/20 sm:bottom-24 sm:right-6 dark:border-white/10 dark:bg-slate-950"
+          className="fixed bottom-20 right-3 z-[70] flex h-[min(620px,calc(100vh-96px))] w-[calc(100vw-24px)] max-w-[410px] flex-col overflow-hidden rounded-3xl border border-[#e3dfd1] bg-[#fffdf8] shadow-2xl shadow-[#76634a]/20 sm:bottom-24 sm:right-6"
           aria-label={`${botName} Assistant`}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-slate-100 bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 px-4 py-3.5 text-white dark:border-white/10">
+          <div className="flex items-center justify-between border-b border-[#e3dfd1] bg-gradient-to-r from-[#e8eee2] via-[#f5f0e2] to-[#f6e2b9] px-4 py-3.5 text-[#493a2e]">
             <div className="flex items-center gap-3">
               <span className="bot-icon-wrap size-10">
                 <img src={botAvatar} alt={botName} className="size-full object-cover" />
@@ -273,15 +273,15 @@ export default function ViniChatbot({ triggerClassName = '' }) {
               <div>
                 <h3 className="text-sm font-bold leading-tight flex items-center gap-1.5">
                   {botName} AI
-                  <Sparkles size={14} className="text-cyan-300" />
+                  <Sparkles size={14} className="text-[#c49339]" />
                 </h3>
-                <p className="text-xs text-cyan-200">Vinfowise Intelligent Assistant</p>
+                <p className="text-xs text-[#796b52]">Vinfowise Intelligent Assistant</p>
               </div>
             </div>
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="rounded-lg p-1.5 text-slate-300 hover:bg-white/10 hover:text-white"
+              className="rounded-lg p-1.5 text-[#706557] hover:bg-white/70 hover:text-[#493a2e]"
               aria-label="Close chat"
             >
               <X size={18} />
@@ -289,22 +289,22 @@ export default function ViniChatbot({ triggerClassName = '' }) {
           </div>
 
           {/* Messages Container */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-sm bg-slate-50/50 dark:bg-slate-900/30">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-sm bg-[#f8f7f1]">
             {messages.map((m, idx) => (
               <div
                 key={idx}
                 className={`flex gap-2.5 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {m.role === 'bot' && (
-                  <div className="size-7 shrink-0 rounded-full bg-blue-600/10 dark:bg-blue-400/20 flex items-center justify-center text-blue-600 dark:text-blue-300 mt-0.5">
+                  <div className="size-7 shrink-0 rounded-full bg-[#e8eee2] flex items-center justify-center text-[#718365] mt-0.5">
                     <Bot size={15} />
                   </div>
                 )}
                 <div
                   className={`max-w-[82%] rounded-2xl px-4 py-2.5 leading-relaxed whitespace-pre-wrap ${
                     m.role === 'user'
-                      ? 'bg-blue-600 text-white shadow-sm'
-                      : 'border border-slate-200/80 bg-white text-slate-800 shadow-sm dark:border-white/10 dark:bg-slate-900 dark:text-slate-100'
+                      ? 'bg-[#d5a649] text-[#fffdf8] shadow-sm'
+                      : 'border border-[#e3dfd1] bg-[#fffdf8] text-[#625543] shadow-sm'
                   }`}
                 >
                   {m.text}
@@ -313,10 +313,10 @@ export default function ViniChatbot({ triggerClassName = '' }) {
             ))}
             {isTyping && (
               <div className="flex gap-2.5 justify-start">
-                <div className="size-7 shrink-0 rounded-full bg-blue-600/10 flex items-center justify-center text-blue-600 mt-0.5">
+                <div className="size-7 shrink-0 rounded-full bg-[#e8eee2] flex items-center justify-center text-[#718365] mt-0.5">
                   <Bot size={15} />
                 </div>
-                <div className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-xs text-slate-500 italic dark:border-white/10 dark:bg-slate-900">
+                <div className="rounded-2xl border border-[#e3dfd1] bg-[#fffdf8] px-4 py-2 text-xs text-[#817766] italic">
                   {botName} is thinking...
                 </div>
               </div>
@@ -325,13 +325,13 @@ export default function ViniChatbot({ triggerClassName = '' }) {
           </div>
 
           {/* Suggested Prompts */}
-          <div className="border-t border-slate-100 bg-white px-3 py-2 flex gap-1.5 overflow-x-auto no-scrollbar dark:border-white/10 dark:bg-slate-950">
+          <div className="border-t border-[#e3dfd1] bg-[#fffdf8] px-3 py-2 flex gap-1.5 overflow-x-auto no-scrollbar">
             {suggestedPrompts.map((prompt, i) => (
               <button
                 key={i}
                 type="button"
                 onClick={() => handleSend(prompt)}
-                className="shrink-0 rounded-full border border-blue-200 bg-blue-50/60 px-3 py-1 text-xs font-medium text-blue-700 transition hover:bg-blue-100 dark:border-blue-900/40 dark:bg-blue-950/40 dark:text-blue-300"
+                className="shrink-0 rounded-full border border-[#ded8c8] bg-[#f0f1e9] px-3 py-1 text-xs font-medium text-[#65785b] transition hover:bg-[#e6ebdf]"
               >
                 {prompt}
               </button>
@@ -344,19 +344,19 @@ export default function ViniChatbot({ triggerClassName = '' }) {
               e.preventDefault();
               handleSend();
             }}
-            className="flex items-center gap-2 border-t border-slate-200 bg-white p-3 dark:border-white/10 dark:bg-slate-950"
+            className="flex items-center gap-2 border-t border-[#e3dfd1] bg-[#fffdf8] p-3"
           >
             <input
               type="text"
               value={input}
               onChange={e => setInput(e.target.value)}
               placeholder="Ask anything about our IT services..."
-              className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm focus:border-blue-500 focus:outline-none dark:border-white/10 dark:bg-slate-900 dark:text-white"
+              className="flex-1 rounded-xl border border-[#ded8c8] bg-[#f8f7f1] px-3.5 py-2 text-sm text-[#493a2e] focus:border-[#c49339] focus:outline-none"
             />
             <button
               type="submit"
               disabled={!input.trim()}
-              className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white transition hover:bg-blue-700 disabled:opacity-40"
+              className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#c6953b] text-[#fffdf8] transition hover:bg-[#b98731] disabled:opacity-40"
               aria-label="Send message"
             >
               <Send size={16} />
