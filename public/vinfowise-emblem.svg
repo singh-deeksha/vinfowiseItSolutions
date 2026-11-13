@@ -1,0 +1,10 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Vinfowise emblem</title>
+  <desc id="desc">Black and white winged V emblem with a star.</desc>
+  <rect width="512" height="512" rx="96" fill="#000000"/>
+  <path d="M256 72L272 112L315 116L282 143L292 185L256 162L220 185L230 143L197 116L240 112L256 72Z" stroke="#F8FAFC" stroke-width="13" stroke-linejoin="round"/>
+  <path d="M210 92C225 82 240 77 256 77C272 77 287 82 302 92" stroke="#BFC3C9" stroke-width="13" stroke-linecap="round"/>
+  <path d="M140 117L232 158L256 262L280 158L372 117L332 183L293 196L278 231L315 211L354 201L332 241L292 253L276 292L315 270L342 264L317 304L284 309L256 374L228 309L195 304L170 264L197 270L236 292L220 253L180 241L158 201L197 211L234 231L219 196L180 183L140 117Z" stroke="#F8FAFC" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M116 217C110 283 148 344 210 367" stroke="#AEB4BC" stroke-width="12" stroke-linecap="round"/>
+  <path d="M396 217C402 283 364 344 302 367" stroke="#AEB4BC" stroke-width="12" stroke-linecap="round"/>
+</svg>

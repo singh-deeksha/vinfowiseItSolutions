@@ -1,0 +1,12 @@
+<svg width="980" height="240" viewBox="0 0 980 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Vinfowise IT Solutions horizontal logo</title>
+  <desc id="desc">Black and white winged V logo with Vinfowise IT Solutions wordmark.</desc>
+  <rect width="980" height="240" fill="#000000"/>
+  <path d="M124 38L132 58L154 60L137 74L142 95L124 83L106 95L111 74L94 60L116 58L124 38Z" stroke="#F8FAFC" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M101 48C109 43 116 40 124 40C132 40 139 43 147 48" stroke="#BFC3C9" stroke-width="7" stroke-linecap="round"/>
+  <path d="M65 62L112 83L124 136L136 83L183 62L163 96L143 103L135 121L154 111L174 106L163 126L143 132L134 152L154 141L168 138L155 158L138 161L124 194L110 161L93 158L80 138L94 141L114 152L105 132L85 126L74 106L94 111L113 121L105 103L85 96L65 62Z" stroke="#F8FAFC" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M53 112C50 146 70 177 101 189" stroke="#AEB4BC" stroke-width="6" stroke-linecap="round"/>
+  <path d="M195 112C198 146 178 177 147 189" stroke="#AEB4BC" stroke-width="6" stroke-linecap="round"/>
+  <text x="260" y="105" fill="#F8FAFC" font-family="Georgia, 'Times New Roman', serif" font-size="58" font-weight="800" letter-spacing="3">VINFOWISE</text>
+  <text x="264" y="163" fill="#F8FAFC" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-weight="800" letter-spacing="5">IT SOLUTIONS</text>
+</svg>

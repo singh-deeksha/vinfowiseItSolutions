@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .container-wide {
+    width: min(1180px, 100% - 32px);
+    margin-inline: auto;
+  }
+  .section-pad {
+    padding-block: clamp(2.75rem, 5.5vw, 5rem);
+  }
+  .focus-ring:focus-visible {
+    outline-offset: 3px;
+    outline: 3px solid #2563eb8c;
+  }
+  .header-cta {
+    display: none;
+  }
+  @media (min-width: 640px) {
+    .header-cta {
+      display: inline-flex;
+    }
+  }
+  .bot-icon-wrap {
+    background: #ffffffe6;
+    border-radius: 999px;
+    justify-content: center;
+    align-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    overflow: hidden;
+  }
+  .bot-icon-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .ai-float-button {
+    min-height: 0;
+    box-shadow: none;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    animation: 2.4s ease-in-out infinite soft-pulse;
+    position: relative;
+  }
+  .ai-unread-dot {
+    background: #22c55e;
+    border-radius: 999px;
+    width: 0.8rem;
+    height: 0.8rem;
+    animation: 1.3s ease-in-out infinite unread-pop;
+    position: absolute;
+    top: 0.1rem;
+    right: 0.15rem;
+    box-shadow: 0 0 0 3px #ffffffe6, 0 0 16px #22c55ea6;
+  }
+  .overflow-wrap-anywhere {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
+@keyframes unread-pop {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+}
+
+@keyframes soft-pulse {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.04);
+  }
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+}
