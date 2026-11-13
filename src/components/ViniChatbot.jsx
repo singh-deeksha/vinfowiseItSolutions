@@ -254,7 +254,7 @@ export default function ViniChatbot({ triggerClassName = '' }) {
             aria-hidden="true"
           />
         </span>
-        <span className="hidden sm:inline">{botName} AI</span>
+        <span className="bot-trigger-label hidden sm:inline">{botName} AI</span>
         {hasUnread && <span className="ai-unread-dot" aria-label="Vini has a new answer" />}
       </button>
 

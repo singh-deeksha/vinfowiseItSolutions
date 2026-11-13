@@ -32,8 +32,8 @@ export const company = {
   industry: "IT Services, Software Development, Web Development, Automation, and Digital Solutions",
   tagline: "Empowering businesses through scalable digital solutions.",
   email: "singhdeeksha2426@gmail.com",
-  phone: "+91 98765 43210",
-  whatsapp: "+919876543210",
+  phone: "Available through email and WhatsApp inquiry",
+  whatsapp: "",
   address: "Mohali, Chandigarh - remote and in-person consultations by appointment",
   serviceArea: "Mohali, Chandigarh",
   owner: "Deeksha Singh",
@@ -45,6 +45,20 @@ export const company = {
     Instagram: "https://instagram.com",
     Facebook: "https://facebook.com",
   },
+};
+
+export const about = {
+  description: "We help businesses, startups, and service teams build professional websites, automate workflows, and launch useful digital products.",
+  mission: "Deliver dependable technology that helps businesses scale with clarity, confidence, and measurable value.",
+  vision: "Become a trusted digital transformation partner for businesses building their next stage of growth.",
+  values: "Think deeply, communicate clearly, protect trust, and build systems that remain useful long after launch.",
+  teamIntro: "A focused team for quality, architecture, and intelligent software delivery.",
+};
+
+export const heroContent = {
+  eyebrow: "Websites, software, automation, and AI support",
+  description: "Vinfowise IT Solutions specializes in website development, software development, workflow automation, AI solutions, and digital transformation services for businesses in Mohali, Chandigarh, and worldwide.",
+  badges: ["NDA friendly", "Enterprise security", "Mohali Chandigarh"],
 };
 
 export const defaultWhatsAppMessage = "Hi Vinfowise, I want to discuss a website/software project.";
@@ -495,23 +509,26 @@ export const engagementModels = [
 export const teamMembers = [
   {
     name: "Deeksha Singh",
-    leadershipRole: "CEO",
-    // specialty: "Manual and automation testing",
-    bio: "My vision is simple: build something that matters, work with people who believe in it, and let our work speak for itself.",
+    title: "Quality Assurance Architect",
+    leadershipRole: "Owner & Founder",
+    specialty: "Manual and automation testing",
+    bio: "Specialized in manual and automation testing, ensuring reliable, scalable, and high-quality software solutions for modern businesses.",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80",
   },
   {
     name: "Akshay Chandla",
-    leadershipRole: "COO",
-    // specialty: "Technology strategy and architecture",
-    bio: "Great ideas create possibilities. Great execution turns them into reality.",
+    title: "Chief Technology Officer (CTO)",
+    leadershipRole: "Co-owner & Co-founder",
+    specialty: "Technology strategy and architecture",
+    bio: "Leading technology strategy, scalable system architecture, and innovative software solutions to drive business growth and digital transformation.",
     image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80",
   },
   {
-    name: "Parwind Paswan",
-    leadershipRole: "Co-founder",
-    // specialty: "Full stack development and AI solutions",
-    bio: "Technology is more than writing code. It's about solving problems and creating possibilities.",
+    name: "Paswn Parwind",
+    title: "Senior Full Stack & AI Engineer",
+    leadershipRole: "",
+    specialty: "Full stack development and AI solutions",
+    bio: "Specialized in full stack development and AI-powered solutions, building scalable, intelligent, and high-performance applications for modern businesses.",
     image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80",
   },
 ];

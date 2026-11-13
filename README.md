@@ -1,6 +1,6 @@
 # Vinfowise IT Solutions Website
 
-Production-ready React + Tailwind corporate website using the NeoTech Enterprise theme with reusable pages, centralized content, dark/light mode, lead forms, WhatsApp CTA, portfolio filters, careers, insights, privacy, and terms pages.
+React + Tailwind recreation of the public Vinfowise site, with reusable pages, centralized content, portfolio filters, careers, insights, privacy, and terms pages. The original deployed source was unavailable, so the current UI was reconstructed from the public site and its content API; original server-side features such as the admin and inquiry APIs are not included.
 
 ## Logo
 
@@ -19,13 +19,15 @@ Full brand usage notes are in:
 BRAND-KIT.md
 ```
 
-## Live Local Preview
+## Run Locally
 
-The site is currently running locally at:
+Start the Vite development server:
 
-```text
-http://localhost:4173/
+```bash
+npm run dev
 ```
+
+Vite serves the site at `http://127.0.0.1:5173/` by default.
 
 ## Common Commands
 

@@ -1,134 +1,51 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, ShieldCheck, Linkedin, Instagram, Facebook } from 'lucide-react';
-import { useSiteContent } from '../context/SiteContentContext';
+import { Mail, MapPin, Phone } from 'lucide-react';
+import { useSiteContent } from '../context/SiteContentContext.jsx';
 
 export default function Footer() {
-  const { company, navItems, services } = useSiteContent();
+  const { company, navItems } = useSiteContent();
 
   return (
-    <footer className="border-t border-slate-200/80 bg-slate-900 text-slate-300 dark:border-white/10 dark:bg-slate-950">
-      <div className="container-wide py-12 sm:py-16">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-5">
-          {/* Brand Info */}
-          <div className="lg:col-span-2">
-            <Link to="/" className="focus-ring inline-flex items-center gap-3">
-              <img
-                className="size-11 rounded-xl ring-1 ring-white/10"
-                src="/vinfowise-emblem.svg"
-                alt="Vinfowise IT Solutions logo"
-              />
-              <span className="text-xl font-bold text-white">{company.name}</span>
-            </Link>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
-              {company.tagline} We specialize in responsive web development, custom software applications, AI automation, QA testing, and cloud infrastructure for modern growing businesses.
-            </p>
-            <div className="mt-6 flex items-center gap-3">
-              {company.social?.LinkedIn && (
-                <a
-                  href={company.social.LinkedIn}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="focus-ring flex size-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-800/80 text-slate-300 transition hover:border-blue-500 hover:text-white"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin size={18} />
-                </a>
-              )}
-              {company.social?.Instagram && (
-                <a
-                  href={company.social.Instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="focus-ring flex size-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-800/80 text-slate-300 transition hover:border-blue-500 hover:text-white"
-                  aria-label="Instagram"
-                >
-                  <Instagram size={18} />
-                </a>
-              )}
-              {company.social?.Facebook && (
-                <a
-                  href={company.social.Facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="focus-ring flex size-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-800/80 text-slate-300 transition hover:border-blue-500 hover:text-white"
-                  aria-label="Facebook"
-                >
-                  <Facebook size={18} />
-                </a>
-              )}
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Navigation</h3>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              {navItems.map(item => (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    className="text-slate-400 transition hover:text-white"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Services Deep Links */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Services</h3>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              {services.slice(0, 7).map(service => (
-                <li key={service.path}>
-                  <Link
-                    to={service.path}
-                    className="text-slate-400 transition hover:text-white"
-                  >
-                    {service.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Details & Legal */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Get in Touch</h3>
-            <ul className="mt-4 space-y-3 text-sm text-slate-400">
-              <li className="flex items-start gap-2.5">
-                <Mail size={16} className="mt-0.5 shrink-0 text-blue-400" />
-                <a href={`mailto:${company.email}`} className="hover:text-white break-all">
-                  {company.email}
-                </a>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <MapPin size={16} className="mt-0.5 shrink-0 text-blue-400" />
-                <span>{company.serviceArea} (Remote & In-person)</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <ShieldCheck size={16} className="mt-0.5 shrink-0 text-blue-400" />
-                <span>NDA-friendly & GDPR-ready</span>
-              </li>
-            </ul>
-
-            <div className="mt-6 border-t border-slate-800 pt-4">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400">Legal</h4>
-              <div className="mt-2 flex gap-4 text-xs">
-                <Link to="/privacy-policy" className="hover:text-white">Privacy Policy</Link>
-                <Link to="/terms" className="hover:text-white">Terms of Service</Link>
-              </div>
-            </div>
-          </div>
+    <footer className="border-t border-white/10 bg-[#060a15] text-slate-300">
+      <div className="container-wide grid gap-10 py-12 md:grid-cols-[1.25fr_0.8fr_1fr] md:py-16">
+        <div>
+          <Link to="/" className="inline-flex items-center gap-3">
+            <img className="size-12 rounded-xl" src="/vinfowise-emblem.svg" alt="" />
+            <span className="text-lg font-extrabold text-white">{company.name}</span>
+          </Link>
+          <p className="mt-4 max-w-sm leading-7 text-slate-400">{company.tagline}</p>
+          <ul className="mt-6 space-y-3 text-sm text-slate-400">
+            <li className="flex items-start gap-3"><Mail size={17} className="mt-0.5 shrink-0 text-cyan-300" /><a href={`mailto:${company.email}`} className="hover:text-white">{company.email}</a></li>
+            <li className="flex items-start gap-3"><Phone size={17} className="mt-0.5 shrink-0 text-cyan-300" /><span>WhatsApp inquiry available from the contact page</span></li>
+            <li className="flex items-start gap-3"><MapPin size={17} className="mt-0.5 shrink-0 text-cyan-300" /><span>{company.address}</span></li>
+          </ul>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-800 pt-8 text-xs text-slate-500 sm:flex-row">
-          <p>© {new Date().getFullYear()} {company.name}. All rights reserved.</p>
-          <p className="flex items-center gap-1.5">
-            <span>Built with precision for enterprise performance</span>
-          </p>
+        <nav aria-label="Footer navigation">
+          <h2 className="text-sm font-extrabold uppercase tracking-[0.16em] text-white">Quick Links</h2>
+          <ul className="mt-5 grid grid-cols-2 gap-3 text-sm">
+            {navItems.map(item => <li key={item.path}><Link to={item.path} className="text-slate-400 transition hover:text-cyan-200">{item.label}</Link></li>)}
+          </ul>
+          <div className="mt-7 flex gap-5 text-sm">
+            <Link to="/privacy-policy" className="text-slate-400 hover:text-white">Privacy Policy</Link>
+            <Link to="/terms" className="text-slate-400 hover:text-white">Terms</Link>
+          </div>
+        </nav>
+
+        <div>
+          <h2 className="text-sm font-extrabold uppercase tracking-[0.16em] text-white">Newsletter</h2>
+          <p className="mt-5 text-sm leading-6 text-slate-400">Technology insights, automation ideas, and practical delivery guidance.</p>
+          <form action={`mailto:${company.email}`} method="get" className="mt-5 flex gap-2">
+            <input type="hidden" name="subject" value="Newsletter subscription" />
+            <label className="sr-only" htmlFor="newsletter-email">Work email</label>
+            <input id="newsletter-email" name="body" type="email" placeholder="Work email" required className="min-w-0 flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-cyan-300" />
+            <button type="submit" className="rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-blue-500">Join</button>
+          </form>
+        </div>
+      </div>
+      <div className="border-t border-white/10">
+        <div className="container-wide py-5 text-center text-xs text-slate-500 sm:text-left">
+          © {new Date().getFullYear()} {company.name}. All rights reserved. Built and maintained by Vinfowise IT Solutions.
         </div>
       </div>
     </footer>

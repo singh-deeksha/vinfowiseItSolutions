@@ -32,6 +32,8 @@ export function SiteContentProvider({ children }) {
     return {
       loading,
       company: data?.settings ? { ...defaultContent.company, ...data.settings } : defaultContent.company,
+      about: defaultContent.about,
+      heroContent: defaultContent.heroContent,
       navItems: defaultContent.navItems,
       metrics: defaultContent.metrics,
       services: defaultContent.services,

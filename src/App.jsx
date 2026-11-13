@@ -1,5 +1,10 @@
-import { Link, Route, Routes, useLocation, useParams } from 'react-router-dom';
-import { ArrowRight, CheckCircle2, Mail, MapPin, Phone } from 'lucide-react';
+import { useState } from 'react';
+import { Link, Route, Routes, useParams } from 'react-router-dom';
+import {
+  ArrowRight,
+  CheckCircle2,
+  ChevronDown,
+} from 'lucide-react';
 import Button from './components/Button.jsx';
 import CommandCenterCard from './components/CommandCenterCard.jsx';
 import FloatingWidgets from './components/FloatingWidgets.jsx';
@@ -8,140 +13,307 @@ import Navbar from './components/Navbar.jsx';
 import SEO from './components/SEO.jsx';
 import { useSiteContent } from './context/SiteContentContext.jsx';
 
-const sectionClass = 'container-wide section-pad';
-const cardClass = 'rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-slate-900';
+const pageWrap = 'container-wide py-14 sm:py-20 lg:py-24';
+const cardClass = 'rounded-3xl border border-white/10 bg-white/[0.045] p-6 shadow-xl shadow-black/10 backdrop-blur-sm';
+const mutedText = 'text-slate-300/90';
 
-function PageTitle({ eyebrow, title, description }) {
+function Eyebrow({ children }) {
+  return <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-cyan-300">{children}</p>;
+}
+
+function PageIntro({ eyebrow, title, description, centered = true }) {
   return (
-    <div className="mx-auto max-w-3xl text-center">
-      {eyebrow && <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-300">{eyebrow}</p>}
-      <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-5xl dark:text-white">{title}</h1>
-      {description && <p className="mt-5 text-base leading-7 text-slate-600 sm:text-lg dark:text-slate-300">{description}</p>}
+    <div className={`${centered ? 'mx-auto text-center' : ''} max-w-4xl`}>
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+      <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-7xl">{title}</h1>
+      {description && <p className={`mt-6 max-w-3xl text-lg leading-8 ${mutedText} ${centered ? 'mx-auto' : ''}`}>{description}</p>}
     </div>
   );
 }
 
-function HomePage() {
-  const { company, metrics, services, portfolioProjects, teamMembers, whyChooseUs } = useSiteContent();
-
+function SectionHeading({ eyebrow, title, description }) {
   return (
-    <>
-      <SEO title="Home" description={company.tagline} />
-      <section className="overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-16 sm:py-24 dark:from-slate-950 dark:via-slate-950 dark:to-blue-950/40">
-        <div className="container-wide grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700 dark:border-blue-400/20 dark:bg-white/5 dark:text-blue-200">
-              <span className="size-2 rounded-full bg-emerald-500" />
-              Digital solutions for growing businesses
-            </p>
-            <h1 className="mt-6 max-w-2xl text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-6xl dark:text-white">
-              Build smarter. <span className="text-blue-600 dark:text-blue-400">Grow faster.</span>
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-              {company.tagline} From custom software and websites to automation and AI, we turn practical ideas into dependable digital products.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button to="/contact">Start a project</Button>
-              <Button to="/services" variant="secondary">Explore services</Button>
-            </div>
-            <div className="mt-8 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-              <MapPin size={17} className="text-blue-600 dark:text-blue-400" />
-              Serving Mohali, Chandigarh, and remote clients
-            </div>
+    <div className="max-w-3xl">
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+      <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">{title}</h2>
+      {description && <p className={`mt-4 leading-7 ${mutedText}`}>{description}</p>}
+    </div>
+  );
+}
+
+function StatsGrid({ metrics }) {
+  return (
+    <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      {metrics.map(metric => (
+        <div key={metric.label} className={`${cardClass} p-6 sm:p-8`}>
+          <p className="text-4xl font-black tracking-tight text-white sm:text-5xl">{metric.value}</p>
+          <p className={`mt-3 text-base ${mutedText}`}>{metric.label}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function HeroSection() {
+  const { company, heroContent, metrics } = useSiteContent();
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-br from-indigo-950 via-slate-950 to-cyan-950">
+      <div className="pointer-events-none absolute -left-32 top-20 size-96 rounded-full bg-blue-600/20 blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 bottom-0 size-96 rounded-full bg-cyan-500/15 blur-3xl" />
+      <div className={`${pageWrap} relative grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]`}>
+        <div>
+          <Eyebrow>{heroContent.eyebrow}</Eyebrow>
+          <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-7xl">
+            {company.tagline}
+          </h1>
+          <p className={`mt-6 max-w-2xl text-lg leading-8 ${mutedText}`}>{heroContent.description}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button to="/contact">{'Book Consultation'}</Button>
+            <Button to="/services" variant="secondary">Explore Services</Button>
           </div>
-          <CommandCenterCard />
-        </div>
-      </section>
-
-      <section className="border-y border-slate-200 bg-white dark:border-white/10 dark:bg-slate-900/50">
-        <div className="container-wide grid grid-cols-2 gap-6 py-8 lg:grid-cols-4">
-          {metrics.map(metric => (
-            <div key={metric.label}>
-              <p className="text-2xl font-black text-slate-950 dark:text-white">{metric.value}</p>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{metric.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className={sectionClass}>
-        <PageTitle eyebrow="What we do" title="Technology that moves your business forward" description="A practical, end-to-end partner for planning, building, and improving your digital products." />
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {services.slice(0, 6).map(service => {
-            const Icon = service.icon;
-            return (
-              <Link key={service.slug} to={service.path} className={`${cardClass} group transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-lg dark:hover:border-blue-400/40`}>
-                <Icon size={28} className="text-blue-600 dark:text-blue-400" />
-                <h2 className="mt-5 text-xl font-bold text-slate-950 dark:text-white">{service.title}</h2>
-                <p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">{service.summary}</p>
-                <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 dark:text-blue-300">Learn more <ArrowRight size={16} className="transition group-hover:translate-x-1" /></span>
-              </Link>
-            );
-          })}
-        </div>
-        <div className="mt-8 text-center"><Button to="/services" variant="secondary">View all services</Button></div>
-      </section>
-
-      <section className="bg-slate-50 dark:bg-white/[0.03]">
-        <div className={sectionClass}>
-          <PageTitle eyebrow="Why Vinfowise" title="A clear path from idea to launch" description="Direct communication, thoughtful engineering, and reliable delivery keep your project focused on what matters." />
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {whyChooseUs.map(item => {
-              const Icon = item.icon;
-              return <article className={cardClass} key={item.title}><Icon className="text-blue-600 dark:text-blue-400" size={25} /><h2 className="mt-4 font-bold text-slate-950 dark:text-white">{item.title}</h2><p className="mt-2 leading-7 text-slate-600 dark:text-slate-300">{item.text}</p></article>;
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className={sectionClass}>
-        <PageTitle eyebrow="Selected work" title="Solutions built around real needs" description="Explore examples of software, automation, and web experiences designed to make work simpler." />
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {portfolioProjects.slice(0, 3).map(project => (
-            <article key={project.title} className={`${cardClass} overflow-hidden p-0`}>
-              <img src={project.image} alt="" className="h-48 w-full object-cover" loading="lazy" />
-              <div className="p-6"><p className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-300">{project.category}</p><h2 className="mt-2 text-xl font-bold text-slate-950 dark:text-white">{project.title}</h2><p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">{project.description}</p></div>
-            </article>
-          ))}
-        </div>
-        <div className="mt-8 text-center"><Button to="/portfolio" variant="secondary">Explore portfolio</Button></div>
-      </section>
-
-      <section className="bg-slate-50 dark:bg-white/[0.03]">
-        <div className={sectionClass}>
-          <PageTitle eyebrow="Our people" title="A team invested in your success" description="Meet the people bringing thoughtful planning, engineering, and quality assurance to every project." />
-          <div className="mx-auto mt-10 grid max-w-4xl gap-5 md:grid-cols-3">
-            {teamMembers.map(member => (
-              <article key={member.name} className={`${cardClass} text-center`}>
-                <img src={member.image} alt={member.name} className="mx-auto size-24 rounded-full object-cover" loading="lazy" />
-                <h2 className="mt-4 font-bold text-slate-950 dark:text-white">{member.name}</h2>
-                <p className="mt-1 text-sm font-medium text-blue-700 dark:text-blue-300">{member.title || member.leadershipRole}</p>
-                <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{member.specialty}</p>
-              </article>
+          <div className="mt-8 flex flex-wrap gap-3">
+            {heroContent.badges.map(badge => (
+              <span key={badge} className="rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-slate-200">{badge}</span>
             ))}
           </div>
         </div>
-      </section>
+        <div className="space-y-5">
+          <CommandCenterCard />
+          <div className="grid gap-3 sm:grid-cols-3">
+            {metrics.slice(0, 3).map(metric => (
+              <div key={metric.label} className="rounded-2xl border border-white/10 bg-white/[0.05] p-4">
+                <p className="text-xl font-black text-white">{metric.value}</p>
+                <p className="mt-1 text-xs leading-5 text-slate-300">{metric.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
+function ServiceCards({ limit }) {
+  const { services } = useSiteContent();
+  return (
+    <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {services.slice(0, limit || services.length).map(service => {
+        const Icon = service.icon;
+        return (
+          <Link key={service.slug} to={service.path} className={`${cardClass} group transition duration-200 hover:-translate-y-1 hover:border-cyan-300/50 hover:bg-white/[0.075]`}>
+            <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-cyan-400/10 text-cyan-300">
+              <Icon size={25} />
+            </span>
+            <h3 className="mt-5 text-xl font-bold text-white">{service.title}</h3>
+            <p className={`mt-3 text-sm leading-7 ${mutedText}`}>{service.summary}</p>
+            <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-300">View Details <ArrowRight size={16} className="transition group-hover:translate-x-1" /></span>
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
+
+function Principles({
+  items,
+  title = 'A practical delivery partner for serious business outcomes.',
+  description = 'How we keep enterprise delivery reliable.',
+}) {
+  return (
+    <section className="border-y border-white/5 bg-slate-900/45">
+      <div className={pageWrap}>
+        <SectionHeading eyebrow="Operating principles" title={title} description={description} />
+        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map(item => {
+            const Icon = item.icon;
+            return (
+              <article key={item.title} className={cardClass}>
+                <Icon size={25} className="text-cyan-300" />
+                <h3 className="mt-4 text-lg font-bold text-white">{item.title}</h3>
+                <p className={`mt-2 text-sm leading-7 ${mutedText}`}>{item.text}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CaseStudyCards({ limit }) {
+  const { caseStudies } = useSiteContent();
+  return (
+    <div className="mt-9 grid gap-4 md:grid-cols-2">
+      {caseStudies.slice(0, limit || caseStudies.length).map(study => (
+        <article key={study.title} className={cardClass}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">{study.category}</span>
+            <span className="rounded-full bg-cyan-300/10 px-3 py-1 text-xs font-semibold text-cyan-200">{study.metric}</span>
+          </div>
+          <h3 className="mt-4 text-xl font-bold text-white">{study.title}</h3>
+          <p className={`mt-3 leading-7 ${mutedText}`}>{study.result}</p>
+          <p className="mt-4 text-sm leading-7 text-slate-400">{study.details}</p>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function TeamCards() {
+  const { teamMembers } = useSiteContent();
+  return (
+    <div className="mt-9 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {teamMembers.map(member => (
+        <article key={member.name} className={`${cardClass} overflow-hidden p-0`}>
+          <div className="h-1 bg-gradient-to-r from-blue-500 via-cyan-300 to-blue-500" />
+          <div className="p-6 sm:p-7">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">{member.specialty}</p>
+            <div className="mt-5 flex items-center gap-4">
+              <img src={member.image} alt={member.name} className="size-16 rounded-2xl object-cover ring-2 ring-cyan-300/30" loading="lazy" />
+              <div className="min-w-0">
+                <h3 className="text-xl font-bold text-white">{member.name}</h3>
+                {member.leadershipRole && <p className="mt-1 text-xs font-bold uppercase tracking-wider text-blue-200">{member.leadershipRole}</p>}
+                <p className="mt-1 text-sm text-slate-300">{member.title}</p>
+              </div>
+            </div>
+            <p className={`mt-5 text-sm leading-7 ${mutedText}`}>{member.bio}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function Testimonials() {
+  const { testimonials } = useSiteContent();
+  return (
+    <div className="mt-9 grid gap-4 md:grid-cols-2">
+      {testimonials.map(testimonial => (
+        <figure key={testimonial.name} className={cardClass}>
+          <div className="text-lg tracking-[0.15em] text-amber-300" aria-label="5 out of 5 stars">★★★★★</div>
+          <blockquote className={`mt-4 leading-7 ${mutedText}`}>“{testimonial.quote}”</blockquote>
+          <figcaption className="mt-5 flex items-center gap-3">
+            <img src={testimonial.image} alt="" className="size-11 rounded-full object-cover" loading="lazy" />
+            <span><span className="block font-bold text-white">{testimonial.name}</span><span className="mt-1 block text-xs text-slate-400">{testimonial.role}</span></span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}
+
+function CallToAction() {
+  return (
+    <section className="border-y border-white/10 bg-gradient-to-r from-blue-950 via-indigo-950 to-slate-900">
+      <div className={`${pageWrap} flex flex-col items-start justify-between gap-7 md:flex-row md:items-center`}>
+        <div className="max-w-3xl">
+          <Eyebrow>Ready to scale?</Eyebrow>
+          <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">Build the next version of your business with a senior technology partner.</h2>
+          <p className={`mt-4 leading-7 ${mutedText}`}>Share your goals, timeline, and current challenges. We will map the practical path to launch, optimize, or automate.</p>
+        </div>
+        <div className="flex shrink-0 flex-wrap gap-3">
+          <Button to="/contact">Start a Project</Button>
+          <Button to="/services" variant="secondary">Explore Services</Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HomePage() {
+  const { company, whyChooseUs, industries } = useSiteContent();
+  return (
+    <>
+      <SEO title="Home" description={company.tagline} />
+      <main>
+        <HeroSection />
+        <section className={pageWrap}>
+          <SectionHeading eyebrow="What we do" title="Professional IT services built for clarity, speed, and growth." description="Modern engineering and hands-on delivery for the systems your business depends on." />
+          <ServiceCards limit={6} />
+          <div className="mt-8"><Button to="/services" variant="secondary">View All Services</Button></div>
+        </section>
+        <Principles items={whyChooseUs} />
+        <section className={pageWrap}>
+          <SectionHeading eyebrow="Selected work" title="Solution examples that show how we can help." description="Practical software, automation, and website projects built around real business needs." />
+          <CaseStudyCards limit={4} />
+          <div className="mt-8"><Button to="/portfolio" variant="secondary">Explore Portfolio</Button></div>
+        </section>
+        <section className="border-y border-white/5 bg-slate-900/45">
+          <div className={pageWrap}>
+            <SectionHeading eyebrow="Client feedback" title="Built on trust, clear delivery, and useful outcomes." />
+            <Testimonials />
+          </div>
+        </section>
+        <section className={pageWrap}>
+          <SectionHeading eyebrow="Industries" title="Technology that fits the way your industry works." />
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {industries.map(industry => {
+              const Icon = industry.icon;
+              return <div key={industry.title} className={`${cardClass} flex items-center gap-3 p-4`}><Icon size={20} className="shrink-0 text-cyan-300" /><span className="font-semibold text-slate-100">{industry.title}</span></div>;
+            })}
+          </div>
+        </section>
+      </main>
+      <CallToAction />
+    </>
+  );
+}
+
+function AboutPage() {
+  const { about, metrics, milestones, whyChooseUs } = useSiteContent();
+  return (
+    <>
+      <SEO title="About" description={about.description} />
+      <main>
+        <section className="bg-gradient-to-br from-indigo-950 via-slate-950 to-cyan-950">
+          <div className={pageWrap}>
+            <PageIntro eyebrow="About us" title="A practical digital transformation team for growing businesses." description={about.description} centered={false} />
+            <StatsGrid metrics={metrics} />
+          </div>
+        </section>
+        <section className={pageWrap}>
+          <div className="grid gap-4 md:grid-cols-3">
+            {[['Mission', about.mission], ['Vision', about.vision], ['Values', about.values]].map(([title, text]) => (
+              <article key={title} className={cardClass}><h2 className="text-xl font-bold text-white">{title}</h2><p className={`mt-3 leading-7 ${mutedText}`}>{text}</p></article>
+            ))}
+          </div>
+        </section>
+        <section className="border-y border-white/5 bg-slate-900/45">
+          <div className={pageWrap}>
+            <SectionHeading eyebrow="Team members" title={about.teamIntro} description="Meet the specialists behind Vinfowise IT Solutions across QA, technology leadership, full stack engineering, and AI-powered product development." />
+            <TeamCards />
+          </div>
+        </section>
+        <section className={pageWrap}>
+          <SectionHeading eyebrow="Achievements" title="Built through steady delivery and expanding trust." />
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {milestones.map(milestone => <article key={milestone.year} className={cardClass}><p className="text-2xl font-black text-cyan-300">{milestone.year}</p><p className={`mt-3 leading-7 ${mutedText}`}>{milestone.title}</p></article>)}
+          </div>
+        </section>
+        <Principles items={whyChooseUs} title="How we keep enterprise delivery reliable." description="Think deeply, communicate clearly, protect trust, and deliver with care." />
+      </main>
       <CallToAction />
     </>
   );
 }
 
 function ServicesPage() {
-  const { services, serviceDetails } = useSiteContent();
+  const { devProcess } = useSiteContent();
   return (
     <>
-      <SEO title="Services" description="Explore software, web, mobile, AI, automation, QA, cloud, and consulting services from Vinfowise IT Solutions." />
-      <main className={sectionClass}>
-        <PageTitle eyebrow="Our services" title="The right technology for your next step" description="Flexible services to help you launch a new product, improve operations, or modernize existing systems." />
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
-          {services.map(service => {
-            const Icon = service.icon;
-            const detail = serviceDetails[service.slug];
-            return <article key={service.slug} className={cardClass}><Icon className="text-blue-600 dark:text-blue-400" size={28} /><h2 className="mt-4 text-xl font-bold text-slate-950 dark:text-white">{service.title}</h2><p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">{detail?.description || service.summary}</p><ul className="mt-4 space-y-2">{service.features.map(feature => <li key={feature} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200"><CheckCircle2 size={16} className="text-emerald-600" />{feature}</li>)}</ul><Link className="mt-5 inline-flex items-center gap-2 font-semibold text-blue-700 dark:text-blue-300" to={service.path}>Service details <ArrowRight size={16} /></Link></article>;
-          })}
-        </div>
+      <SEO title="Services" description="IT services for websites, software, automation, and business growth." />
+      <section className="bg-gradient-to-br from-indigo-950 via-slate-950 to-cyan-950">
+        <div className={pageWrap}><PageIntro eyebrow="Our services" title="IT services for websites, software, automation, and business growth." description="What every engagement is designed to improve: your customer experience, delivery speed, and confidence in the technology behind your business." /></div>
+      </section>
+      <main className={pageWrap}>
+        <SectionHeading eyebrow="Services" title="Find the right expertise for your next challenge." />
+        <ServiceCards />
+        <section className="mt-16">
+          <SectionHeading eyebrow="Our process" title="A clear path from discovery to delivery." />
+          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {devProcess.map((step, index) => <div key={step} className={`${cardClass} flex items-center gap-3`}><span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-blue-500/15 font-black text-cyan-200">{String(index + 1).padStart(2, '0')}</span><span className="font-semibold text-white">{step}</span></div>)}
+          </div>
+        </section>
       </main>
       <CallToAction />
     </>
@@ -157,27 +329,13 @@ function ServiceDetailPage() {
   return (
     <>
       <SEO title={detail.title} description={detail.description} />
-      <main className={sectionClass}>
-        <PageTitle eyebrow={service.title} title={detail.hero} description={detail.description} />
-        <div className="mx-auto mt-12 grid max-w-5xl gap-6 md:grid-cols-2">
-          {[['What we cover', detail.cover], ['Expected outcomes', detail.outcomes], ['Project deliverables', detail.deliverables], ['Technology and tools', detail.stack]].map(([heading, items]) => <section key={heading} className={cardClass}><h2 className="text-xl font-bold text-slate-950 dark:text-white">{heading}</h2><ul className="mt-4 space-y-3">{items.map(item => <li key={item} className="flex gap-2 text-slate-600 dark:text-slate-300"><CheckCircle2 size={18} className="mt-0.5 shrink-0 text-emerald-600" />{item}</li>)}</ul></section>)}
+      <section className="bg-gradient-to-br from-indigo-950 via-slate-950 to-cyan-950">
+        <div className={pageWrap}><PageIntro eyebrow={service.title} title={detail.hero} description={detail.description} /></div>
+      </section>
+      <main className={pageWrap}>
+        <div className="grid gap-5 md:grid-cols-2">
+          {[['What we cover', detail.cover], ['Expected outcomes', detail.outcomes], ['Project deliverables', detail.deliverables], ['Technology and tools', detail.stack]].map(([heading, items]) => <section key={heading} className={cardClass}><h2 className="text-xl font-bold text-white">{heading}</h2><ul className="mt-4 space-y-3">{items.map(item => <li key={item} className="flex gap-2 text-slate-300"><CheckCircle2 size={18} className="mt-0.5 shrink-0 text-cyan-300" />{item}</li>)}</ul></section>)}
         </div>
-      </main>
-      <CallToAction />
-    </>
-  );
-}
-
-function AboutPage() {
-  const { company, teamMembers, milestones, devProcess } = useSiteContent();
-  return (
-    <>
-      <SEO title="About" description={`Learn about ${company.name} and the team behind its software and digital solutions.`} />
-      <main>
-        <section className={sectionClass}><PageTitle eyebrow="About us" title="Technology built around people and progress" description={company.tagline} /><div className="mx-auto mt-8 max-w-3xl text-center leading-8 text-slate-600 dark:text-slate-300"><p>We partner with growing businesses to plan and deliver dependable digital solutions. Our approach combines clear communication, practical engineering, and careful quality checks from discovery through deployment.</p><p className="mt-4">{company.responseTime}. Our team works with clients in {company.serviceArea} and remotely.</p></div></section>
-        <section className="bg-slate-50 dark:bg-white/[0.03]"><div className={sectionClass}><PageTitle eyebrow="Our team" title="Meet the people behind the work" /><div className="mx-auto mt-10 grid max-w-4xl gap-5 md:grid-cols-3">{teamMembers.map(member => <article key={member.name} className={`${cardClass} text-center`}><img src={member.image} alt={member.name} className="mx-auto size-24 rounded-full object-cover" loading="lazy" /><h2 className="mt-4 font-bold text-slate-950 dark:text-white">{member.name}</h2><p className="mt-1 text-sm text-blue-700 dark:text-blue-300">{member.title || member.leadershipRole}</p><p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{member.bio}</p></article>)}</div></div></section>
-        <section className={sectionClass}><PageTitle eyebrow="How we work" title="A thoughtful process, from discovery to support" /><div className="mx-auto mt-8 flex max-w-5xl flex-wrap justify-center gap-3">{devProcess.map((step, index) => <div key={step} className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-white/10 dark:bg-slate-900"><span className="flex size-7 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">{index + 1}</span><span className="font-semibold text-slate-800 dark:text-slate-100">{step}</span></div>)}</div></section>
-        <section className="bg-slate-50 dark:bg-white/[0.03]"><div className={sectionClass}><PageTitle eyebrow="Milestones" title="Built for long-term partnerships" /><div className="mx-auto mt-8 max-w-3xl space-y-4">{milestones.map(milestone => <div key={milestone.year} className={`${cardClass} flex gap-5`}><span className="font-black text-blue-700 dark:text-blue-300">{milestone.year}</span><p className="text-slate-600 dark:text-slate-300">{milestone.title}</p></div>)}</div></div></section>
       </main>
       <CallToAction />
     </>
@@ -186,42 +344,109 @@ function AboutPage() {
 
 function PortfolioPage() {
   const { portfolioProjects } = useSiteContent();
-  return <><SEO title="Portfolio" description="Explore software, web development, AI, and automation project examples from Vinfowise IT Solutions." /><main className={sectionClass}><PageTitle eyebrow="Portfolio" title="Work shaped around real challenges" description="Examples of digital projects and product concepts focused on useful outcomes." /><div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">{portfolioProjects.map(project => <article key={project.title} className={`${cardClass} overflow-hidden p-0`}><img src={project.image} alt="" className="h-48 w-full object-cover" loading="lazy" /><div className="p-6"><p className="text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300">{project.category}</p><h2 className="mt-2 text-xl font-bold text-slate-950 dark:text-white">{project.title}</h2><p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{project.description}</p><p className="mt-4 text-sm font-semibold text-emerald-700 dark:text-emerald-300">{project.metric}</p><p className="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300"><strong>Approach:</strong> {project.solution}</p></div></article>)}</div></main><CallToAction /></>;
+  const categories = ['All', ...new Set(portfolioProjects.map(project => project.category))];
+  const [activeCategory, setActiveCategory] = useState('All');
+  const projects = activeCategory === 'All' ? portfolioProjects : portfolioProjects.filter(project => project.category === activeCategory);
+  return (
+    <>
+      <SEO title="Portfolio" description="Practical case studies for websites, software, automation, and AI." />
+      <section className="bg-gradient-to-br from-indigo-950 via-slate-950 to-cyan-950"><div className={pageWrap}><PageIntro eyebrow="Portfolio" title="Practical case studies for websites, software, automation, and AI." description="Explore how thoughtful technology can improve everyday workflows and customer experiences." /></div></section>
+      <main className={pageWrap}>
+        <SectionHeading eyebrow="Case studies and project gallery" title="Selected work" />
+        <div className="mt-7 flex flex-wrap gap-2">{categories.map(category => <button key={category} type="button" onClick={() => setActiveCategory(category)} className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${activeCategory === category ? 'border-cyan-300 bg-cyan-300/10 text-cyan-100' : 'border-white/10 text-slate-300 hover:border-white/30'}`}>{category}</button>)}</div>
+        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {projects.map(project => (
+            <article key={project.title} className={`${cardClass} overflow-hidden p-0`}>
+              <img src={project.image} alt="" className="h-48 w-full object-cover" loading="lazy" />
+              <div className="p-6"><p className="text-xs font-bold uppercase tracking-wider text-cyan-300">{project.category}</p><h2 className="mt-2 text-xl font-bold text-white">{project.title}</h2><p className={`mt-3 text-sm leading-6 ${mutedText}`}>{project.description}</p><p className="mt-4 text-sm font-semibold text-cyan-200">{project.metric}</p></div>
+            </article>
+          ))}
+        </div>
+      </main>
+      <CallToAction />
+    </>
+  );
 }
 
 function InsightsPage() {
   const { blogPosts, faqs } = useSiteContent();
-  return <><SEO title="Insights" description="Practical insights on software development, AI automation, and business technology." /><main className={sectionClass}><PageTitle eyebrow="Insights" title="Ideas for better digital decisions" description="Practical perspectives on technology, product delivery, and business operations." /><div className="mx-auto mt-10 grid max-w-5xl gap-5 md:grid-cols-2">{blogPosts.map(post => <article key={post.slug} className={cardClass}><p className="text-sm font-semibold text-blue-700 dark:text-blue-300">{post.tag} · {post.date}</p><h2 className="mt-3 text-xl font-bold text-slate-950 dark:text-white">{post.title}</h2><p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">{post.excerpt}</p><p className="mt-4 text-sm leading-6 text-slate-500 dark:text-slate-400">{post.content}</p></article>)}</div><div className="mx-auto mt-16 max-w-3xl"><PageTitle eyebrow="FAQs" title="Common questions" /><div className="mt-6 space-y-3">{faqs.map(([question, answer]) => <details key={question} className={cardClass}><summary className="cursor-pointer font-semibold text-slate-950 dark:text-white">{question}</summary><p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">{answer}</p></details>)}</div></div></main><CallToAction /></>;
+  return (
+    <>
+      <SEO title="Insights" description="Technology insights, automation ideas, and practical delivery guidance." />
+      <section className="bg-gradient-to-br from-indigo-950 via-slate-950 to-cyan-950"><div className={pageWrap}><PageIntro eyebrow="Insights" title="Technology insights for better business decisions." description="Automation ideas, engineering practices, and practical delivery guidance for growing teams." /></div></section>
+      <main className={pageWrap}>
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {blogPosts.map(post => <article key={post.slug} className={cardClass}><p className="text-sm font-bold text-cyan-300">{post.tag} · {post.date}</p><h2 className="mt-3 text-xl font-bold text-white">{post.title}</h2><p className={`mt-3 leading-7 ${mutedText}`}>{post.excerpt}</p><details className="mt-4"><summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-semibold text-cyan-200">Read insight <ChevronDown size={16} /></summary><p className={`mt-3 text-sm leading-7 ${mutedText}`}>{post.content}</p></details></article>)}
+        </div>
+        <section className="mt-16">
+          <SectionHeading eyebrow="FAQs" title="Answers to common questions." />
+          <div className="mt-7 space-y-3">{faqs.map(([question, answer]) => <details key={question} className={cardClass}><summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-white">{question}<ChevronDown size={18} className="shrink-0 text-cyan-300" /></summary><p className={`mt-4 leading-7 ${mutedText}`}>{answer}</p></details>)}</div>
+        </section>
+      </main>
+      <CallToAction />
+    </>
+  );
 }
 
 function CareersPage() {
-  const { company } = useSiteContent();
-  return <><SEO title="Careers" description={`Explore career opportunities with ${company.name}.`} /><main className={sectionClass}><PageTitle eyebrow="Careers" title="Do meaningful work with us" description="We are always glad to hear from thoughtful builders who care about quality, collaboration, and solving real problems." /><div className={`${cardClass} mx-auto mt-10 max-w-2xl text-center`}><h2 className="text-xl font-bold text-slate-950 dark:text-white">Introduce yourself</h2><p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">Share a little about your experience, the kind of work you enjoy, and how you could contribute to the team.</p><div className="mt-6"><Button href={`mailto:${company.email}?subject=${encodeURIComponent('Career opportunity')}`}>Email your introduction</Button></div></div></main></>;
+  const jobs = ['Senior React Engineer', 'Cloud Solutions Architect', 'AI Automation Consultant', 'Product Designer'];
+  return (
+    <>
+      <SEO title="Careers" description="Join a delivery culture built around clarity, craft, ownership, and long-term client trust." />
+      <section className="bg-gradient-to-br from-indigo-950 via-slate-950 to-cyan-950"><div className={pageWrap}><PageIntro eyebrow="Careers" title="Build serious technology with thoughtful people." description="Join a delivery culture built around clarity, craft, ownership, and long-term client trust." /></div></section>
+      <main className={pageWrap}>
+        <SectionHeading eyebrow="Open roles" title="Future-ready teams need future-ready talent." />
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+          {jobs.map(job => <article key={job} className={cardClass}><h2 className="text-xl font-bold text-white">{job}</h2><p className={`mt-3 leading-7 ${mutedText}`}>Remote-friendly role for experienced professionals who can communicate clearly and ship dependable work.</p><Button to="/contact" className="mt-5">Apply Now</Button></article>)}
+        </div>
+        <section className="mt-16"><SectionHeading eyebrow="Success stories" title="Work with a team building practical digital systems." description="These examples show the kind of thoughtful software, automation, website, and extension work future Vinfowise team members help deliver." /><CaseStudyCards /></section>
+      </main>
+    </>
+  );
 }
 
 function ContactPage() {
-  const { company, contactCards } = useSiteContent();
-  return <><SEO title="Contact" description={`Contact ${company.name} to discuss your website, software, automation, or AI project.`} /><main className={sectionClass}><PageTitle eyebrow="Contact" title="Let’s talk about what you’re building" description="Tell us what you need. We’ll help you identify a practical next step." /><div className="mx-auto mt-10 grid max-w-5xl gap-5 sm:grid-cols-2">{contactCards.map(card => { const Icon = card.icon; return <article key={card.label} className={cardClass}><Icon size={24} className="text-blue-600 dark:text-blue-400" /><h2 className="mt-4 font-bold text-slate-950 dark:text-white">{card.label}</h2>{card.href ? <a href={card.href} className="mt-2 block break-words text-slate-600 hover:text-blue-700 dark:text-slate-300 dark:hover:text-blue-300">{card.value}</a> : <p className="mt-2 text-slate-600 dark:text-slate-300">{card.value}</p>}</article>; })}</div><p className="mx-auto mt-8 flex max-w-xl items-center justify-center gap-2 text-center text-sm text-slate-500 dark:text-slate-400"><Phone size={16} />{company.responseTime}</p><div className="mt-7 text-center"><Button href={`mailto:${company.email}?subject=${encodeURIComponent('Project inquiry')}`}><Mail size={17} /> Email us</Button></div></main></>;
+  const { company, contactCards, serviceInterestOptions } = useSiteContent();
+  const [sent, setSent] = useState(false);
+  const submit = event => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const subject = encodeURIComponent(`Project inquiry: ${formData.get('service')}`);
+    const body = encodeURIComponent(`Name: ${formData.get('name')}\nEmail: ${formData.get('email')}\nService: ${formData.get('service')}\n\n${formData.get('message')}`);
+    window.location.href = `mailto:${company.email}?subject=${subject}&body=${body}`;
+    setSent(true);
+  };
+  return (
+    <>
+      <SEO title="Contact" description="Tell us what you are building and discuss your next technology project." />
+      <section className="bg-gradient-to-br from-indigo-950 via-slate-950 to-cyan-950"><div className={pageWrap}><PageIntro eyebrow="Contact" title="Let’s plan your next digital milestone." description="Tell us about your goals, timeline, and the challenges you want to solve." /></div></section>
+      <main className={`${pageWrap} grid gap-8 lg:grid-cols-[0.8fr_1.2fr]`}>
+        <div className="space-y-4">{contactCards.map(card => { const Icon = card.icon; return <article key={card.label} className={`${cardClass} flex gap-4`}><Icon size={22} className="mt-1 shrink-0 text-cyan-300" /><div><h2 className="font-bold text-white">{card.label}</h2>{card.href ? <a href={card.href} className="mt-1 block break-words text-sm text-slate-300 hover:text-cyan-200">{card.value}</a> : <p className="mt-1 text-sm text-slate-300">{card.value}</p>}</div></article>; })}</div>
+        <form onSubmit={submit} className={`${cardClass} grid gap-5 sm:grid-cols-2`}>
+          <label className="text-sm font-semibold text-slate-200">Full name<input name="name" required autoComplete="name" className="mt-2 w-full rounded-xl border border-white/15 bg-slate-950/60 px-4 py-3 text-white outline-none focus:border-cyan-300" /></label>
+          <label className="text-sm font-semibold text-slate-200">Work email<input name="email" type="email" required autoComplete="email" className="mt-2 w-full rounded-xl border border-white/15 bg-slate-950/60 px-4 py-3 text-white outline-none focus:border-cyan-300" /></label>
+          <label className="text-sm font-semibold text-slate-200 sm:col-span-2">Service of interest<select name="service" className="mt-2 w-full rounded-xl border border-white/15 bg-slate-950 px-4 py-3 text-white outline-none focus:border-cyan-300">{serviceInterestOptions.map(option => <option key={option}>{option}</option>)}</select></label>
+          <label className="text-sm font-semibold text-slate-200 sm:col-span-2">Project details<textarea name="message" required rows="5" className="mt-2 w-full rounded-xl border border-white/15 bg-slate-950/60 px-4 py-3 text-white outline-none focus:border-cyan-300" /></label>
+          <div className="sm:col-span-2"><Button type="submit">Send project inquiry</Button>{sent && <p className="mt-3 text-sm text-cyan-200">Your email app should open with the inquiry details.</p>}</div>
+        </form>
+      </main>
+    </>
+  );
 }
 
 function LegalPage({ title }) {
-  return <><SEO title={title} /><main className={sectionClass}><PageTitle title={title} description="This page is being prepared. For questions about privacy or terms, please contact our team." /><div className="mt-8 text-center"><Button to="/contact">Contact us</Button></div></main></>;
-}
-
-function CallToAction() {
-  return <section className="bg-blue-700 py-14 text-white dark:bg-blue-900"><div className="container-wide flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center"><div><h2 className="text-2xl font-black sm:text-3xl">Have a project in mind?</h2><p className="mt-2 text-blue-100">Let’s make a clear plan and take the next step together.</p></div><Button to="/contact" variant="dark">Start a conversation</Button></div></section>;
+  const { company } = useSiteContent();
+  return <><SEO title={title} /><main className={pageWrap}><PageIntro eyebrow="Legal" title={title} description={`${title} information for ${company.name}. For questions, contact ${company.email}.`} centered={false} /><p className={`mt-8 max-w-3xl leading-8 ${mutedText}`}>We respect your privacy and aim to handle business and project information responsibly. Please contact us before sharing sensitive information if you have questions about how it will be used or protected.</p><div className="mt-8"><Button href={`mailto:${company.email}`}>Contact us</Button></div></main></>;
 }
 
 function NotFoundPage() {
-  return <main className={sectionClass}><PageTitle title="Page not found" description="The page may have moved, or the link may be incorrect." /><div className="mt-8 text-center"><Button to="/">Back to home</Button></div></main>;
+  return <main className={pageWrap}><PageIntro title="Page not found" description="The page may have moved or the link may be incorrect." /><div className="mt-8 text-center"><Button to="/">Back to home</Button></div></main>;
 }
 
 function App() {
-  const location = useLocation();
-
   return (
-    <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
-      <Navbar key={location.key} />
+    <div className="min-h-screen bg-[#080d1b] text-white">
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
