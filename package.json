@@ -7,11 +7,12 @@
     "dev": "vite --host 127.0.0.1 --configLoader runner",
     "build": "vite build --configLoader runner",
     "preview": "vite preview --host 127.0.0.1 --configLoader runner",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "node --test"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.119.0",
     "@vitejs/plugin-react": "^5.1.1",
-    "framer-motion": "^12.26.0",
     "lucide-react": "^0.562.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",

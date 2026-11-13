@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 import { useSiteContent } from '../context/SiteContentContext.jsx';
 
 export default function Footer() {
@@ -18,6 +18,7 @@ export default function Footer() {
             <li className="flex items-start gap-3"><Mail size={17} className="mt-0.5 shrink-0 text-[#8c794d]" /><a href={`mailto:${company.email}`} className="hover:text-[#493a2e]">{company.email}</a></li>
             <li className="flex items-start gap-3"><Phone size={17} className="mt-0.5 shrink-0 text-[#8c794d]" /><span>WhatsApp inquiry available from the contact page</span></li>
             <li className="flex items-start gap-3"><MapPin size={17} className="mt-0.5 shrink-0 text-[#8c794d]" /><span>{company.address}</span></li>
+            <li className="flex items-start gap-3"><Linkedin size={17} className="mt-0.5 shrink-0 text-[#54868d]" /><a href={company.social.LinkedIn} target="_blank" rel="noreferrer" className="hover:text-[#46797e]">LinkedIn</a></li>
           </ul>
         </div>
 
@@ -28,6 +29,7 @@ export default function Footer() {
           </ul>
           <div className="mt-7 flex gap-5 text-sm">
             <Link to="/privacy-policy" className="text-[#786d5e] hover:text-[#71582d]">Privacy Policy</Link>
+            <Link to="/cookie-policy" className="text-[#786d5e] hover:text-[#71582d]">Cookie Policy</Link>
             <Link to="/terms" className="text-[#786d5e] hover:text-[#71582d]">Terms</Link>
           </div>
         </nav>
@@ -35,11 +37,15 @@ export default function Footer() {
         <div>
           <h2 className="text-sm font-extrabold uppercase tracking-[0.16em] text-[#493a2e]">Newsletter</h2>
           <p className="mt-5 text-sm leading-6 text-[#786d5e]">Technology insights, automation ideas, and practical delivery guidance.</p>
-          <form action={`mailto:${company.email}`} method="get" className="mt-5 flex gap-2">
+          <form action={`mailto:${company.email}`} method="get" className="mt-5 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
             <input type="hidden" name="subject" value="Newsletter subscription" />
             <label className="sr-only" htmlFor="newsletter-email">Work email</label>
-            <input id="newsletter-email" name="body" type="email" placeholder="Work email" required className="min-w-0 flex-1 rounded-xl border border-[#ded8c8] bg-[#fffdf8] px-4 py-3 text-sm text-[#493a2e] outline-none placeholder:text-[#8c8375] focus:border-[#c49339]" />
+            <input id="newsletter-email" name="body" type="email" placeholder="Work email" required className="min-w-0 rounded-xl border border-[#ded8c8] bg-[#fffdf8] px-4 py-3 text-sm text-[#493a2e] outline-none placeholder:text-[#8c8375] focus:border-[#c49339]" />
             <button type="submit" className="rounded-xl bg-[#c6953b] px-4 py-3 text-sm font-bold text-[#fffdf8] transition hover:bg-[#b98731]">Join</button>
+            <label className="flex items-start gap-2 text-xs leading-5 text-[#786d5e] sm:col-span-2">
+              <input type="checkbox" name="consent" value="yes" required className="mt-1 size-3.5 shrink-0 accent-[#54868d]" />
+              <span>I agree to be contacted with Vinfowise updates. <Link to="/privacy-policy" className="underline underline-offset-2">Privacy Policy</Link>.</span>
+            </label>
           </form>
         </div>
       </div>

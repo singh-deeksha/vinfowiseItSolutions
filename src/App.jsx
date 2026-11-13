@@ -11,6 +11,7 @@ import FloatingWidgets from './components/FloatingWidgets.jsx';
 import Footer from './components/Footer.jsx';
 import Navbar from './components/Navbar.jsx';
 import SEO from './components/SEO.jsx';
+import ViniAdminPage from './components/ViniAdminPage.jsx';
 import { useSiteContent } from './context/SiteContentContext.jsx';
 
 const pageWrap = 'container-wide py-14 sm:py-20 lg:py-24';
@@ -434,7 +435,7 @@ function ContactPage() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const subject = encodeURIComponent(`Project inquiry: ${formData.get('service')}`);
-    const body = encodeURIComponent(`Name: ${formData.get('name')}\nEmail: ${formData.get('email')}\nService: ${formData.get('service')}\n\n${formData.get('message')}`);
+    const body = encodeURIComponent(`Name: ${formData.get('name')}\nEmail: ${formData.get('email')}\nService: ${formData.get('service')}\nConsent to use these details to respond: Yes\n\n${formData.get('message')}`);
     window.location.href = `mailto:${company.email}?subject=${subject}&body=${body}`;
     setSent(true);
   };
@@ -443,12 +444,16 @@ function ContactPage() {
       <SEO title="Contact" description="Tell us what you are building and discuss your next technology project." />
       <section className="bg-gradient-to-br from-[#e8eee2] via-[#f5f0e2] to-[#f7e4c2]"><div className={pageWrap}><PageIntro eyebrow="Contact" title="Let’s plan your next digital milestone." description="Tell us about your goals, timeline, and the challenges you want to solve." /></div></section>
       <main className={`${pageWrap} grid min-w-0 gap-8 lg:grid-cols-[0.8fr_1.2fr]`}>
-        <div className="min-w-0 space-y-4">{contactCards.map(card => { const Icon = card.icon; return <article key={card.label} className={`${cardClass} flex min-w-0 gap-4`}><Icon size={22} className="mt-1 shrink-0 text-[#8c794d]" /><div className="min-w-0"><h2 className="font-bold text-[#493a2e]">{card.label}</h2>{card.href ? <a href={card.href} className="overflow-wrap-anywhere mt-1 block text-sm text-[#706557] hover:text-[#75886c]">{card.value}</a> : <p className="mt-1 text-sm text-[#706557]">{card.value}</p>}</div></article>; })}</div>
+        <div className="min-w-0 space-y-4">{contactCards.map(card => { const Icon = card.icon; return <article key={card.label} className={`${cardClass} flex min-w-0 gap-4`}><Icon size={22} className="mt-1 shrink-0 text-[#8c794d]" /><div className="min-w-0"><h2 className="font-bold text-[#493a2e]">{card.label}</h2>{card.href ? <a href={card.href} target={card.external ? '_blank' : undefined} rel={card.external ? 'noreferrer' : undefined} className="overflow-wrap-anywhere mt-1 block text-sm text-[#706557] hover:text-[#75886c]">{card.value}</a> : <p className="mt-1 text-sm text-[#706557]">{card.value}</p>}</div></article>; })}</div>
         <form onSubmit={submit} className={`${cardClass} grid min-w-0 gap-5 sm:grid-cols-2`}>
           <label className="text-sm font-semibold text-[#625543]">Full name<input name="name" required autoComplete="name" className="mt-2 w-full rounded-xl border border-[#ded8c8] bg-[#fffdf8] px-4 py-3 text-[#493a2e] outline-none focus:border-[#c49339]" /></label>
           <label className="text-sm font-semibold text-[#625543]">Work email<input name="email" type="email" required autoComplete="email" className="mt-2 w-full rounded-xl border border-[#ded8c8] bg-[#fffdf8] px-4 py-3 text-[#493a2e] outline-none focus:border-[#c49339]" /></label>
           <label className="text-sm font-semibold text-[#625543] sm:col-span-2">Service of interest<select name="service" className="mt-2 w-full rounded-xl border border-[#ded8c8] bg-[#fffdf8] px-4 py-3 text-[#493a2e] outline-none focus:border-[#c49339]">{serviceInterestOptions.map(option => <option key={option}>{option}</option>)}</select></label>
           <label className="text-sm font-semibold text-[#625543] sm:col-span-2">Project details<textarea name="message" required rows="5" className="mt-2 w-full rounded-xl border border-[#ded8c8] bg-[#fffdf8] px-4 py-3 text-[#493a2e] outline-none focus:border-[#c49339]" /></label>
+          <label className="flex items-start gap-3 text-sm leading-6 text-[#706557] sm:col-span-2">
+            <input name="consent" type="checkbox" required className="mt-1 size-4 shrink-0 accent-[#54868d]" />
+            <span>I agree that Vinfowise IT Solutions may use these details to respond to my inquiry. See the <Link to="/privacy-policy" className="font-semibold text-[#46797e] underline underline-offset-2">Privacy Policy</Link>.</span>
+          </label>
           <div className="sm:col-span-2"><Button type="submit">Send project inquiry</Button>{sent && <p className="mt-3 text-sm text-[#89651f]">Your email app should open with the inquiry details.</p>}</div>
         </form>
       </main>
@@ -458,7 +463,14 @@ function ContactPage() {
 
 function LegalPage({ title }) {
   const { company } = useSiteContent();
-  return <><SEO title={title} /><main className={pageWrap}><PageIntro eyebrow="Legal" title={title} description={`${title} information for ${company.name}. For questions, contact ${company.email}.`} /><p className={`mt-8 max-w-3xl leading-8 ${mutedText}`}>We respect your privacy and aim to handle business and project information responsibly. Please contact us before sharing sensitive information if you have questions about how it will be used or protected.</p><div className="mt-8"><Button href={`mailto:${company.email}`}>Contact us</Button></div></main></>;
+  const privacyCopy = title === 'Privacy Policy'
+    ? 'VINI only saves a visitor’s name or email, conversation history, and potential project inquiries after the visitor explicitly agrees. If they decline, chat details remain only in page memory until the page is refreshed or closed. Consented records are stored in access-restricted systems and are available only to authorized Vinfowise administrators. Contact form and newsletter details are included in an email draft on your device and are sent only if you choose to send that email. Records are retained until removed by an administrator or upon a visitor’s deletion request. Visitors may request access or deletion by emailing us. The chatbot uses one essential, first-party, HttpOnly session cookie to recognize a returning chat visitor and retrieve only their consented conversation. It contains a signed random identifier, is retained for up to 30 days, and is not used for advertising or analytics. This site does not use advertising or analytics cookies.'
+    : 'We respect your privacy and aim to handle business and project information responsibly. Please contact us before sharing sensitive information if you have questions about how it will be used or protected.';
+  const isCookiePolicy = title === 'Cookie Policy';
+  const content = isCookiePolicy
+    ? 'This site uses one essential, first-party, HttpOnly session cookie only when you open the VINI chatbot. It contains a signed random identifier that lets VINI recognize your returning chat session and retrieve details or history only if you previously consented to save them. The cookie expires after 30 days and is not used for advertising or analytics. This site does not use non-essential analytics or advertising cookies, so no cookie-preference banner is currently needed. You can clear the cookie in your browser settings; doing so will end access to the saved chat session on that browser. For privacy requests, contact us.'
+    : privacyCopy;
+  return <><SEO title={title} /><main className={pageWrap}><PageIntro eyebrow="Legal" title={title} description={`${title} information for ${company.name}. For questions, contact ${company.email}.`} /><p className={`mt-8 max-w-3xl leading-8 ${mutedText}`}>{content}</p><div className="mt-8"><Button href={`mailto:${company.email}`}>Contact us</Button></div></main></>;
 }
 
 function NotFoundPage() {
@@ -478,7 +490,9 @@ function App() {
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy-policy" element={<LegalPage title="Privacy Policy" />} />
+        <Route path="/cookie-policy" element={<LegalPage title="Cookie Policy" />} />
         <Route path="/terms" element={<LegalPage title="Terms of Service" />} />
+        <Route path="/admin" element={<ViniAdminPage />} />
         <Route path="/:slug" element={<ServiceDetailPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

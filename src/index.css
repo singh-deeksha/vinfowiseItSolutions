@@ -74,6 +74,21 @@
     overflow-wrap: anywhere;
     word-break: break-word;
   }
+  .chat-messages {
+    scrollbar-color: #a9bfbc #f1f0e9;
+    scrollbar-width: thin;
+  }
+  .chat-messages::-webkit-scrollbar {
+    width: 8px;
+  }
+  .chat-messages::-webkit-scrollbar-track {
+    background: #f1f0e9;
+  }
+  .chat-messages::-webkit-scrollbar-thumb {
+    background: #a9bfbc;
+    border: 2px solid #f1f0e9;
+    border-radius: 999px;
+  }
 }
 
 @keyframes unread-pop {

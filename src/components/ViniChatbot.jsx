@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Send, X, Bot, Sparkles, MessageCircle } from 'lucide-react';
+import { Send, X, Bot, Sparkles } from 'lucide-react';
 import { useSiteContent } from '../context/SiteContentContext';
 
 const SENSITIVE_KEYWORDS = [
@@ -59,6 +59,36 @@ function normalizeText(str) {
   return str.toLowerCase().replace(/[^a-z0-9\s-]/g, ' ');
 }
 
+function makeMessage(role, text) {
+  return { message_id: crypto.randomUUID(), role, text };
+}
+
+function extractName(text) {
+  const explicitName = text.match(/(?:my name is|i am|i'm|this is|call me)\s+([\p{L}][\p{L}'-]*(?:\s+[\p{L}][\p{L}'-]*){0,2})/iu)?.[1]
+    ?.replace(/\s+(?:and|but|from|i|my)\b.*$/i, '')
+    .trim();
+  if (explicitName && !/\b(trying|looking|building|working|interested|need|here|from|a|an|the|to)\b/i.test(explicitName)) {
+    return explicitName.replace(/[.!?]+$/, '').trim();
+  }
+  const normalizedText = normalizeText(text);
+  if (text.length > 80 || /[@?]/.test(text)
+    || /\b(hi|hello|hey|yes|no|okay|ok|skip|website|software|service|price|quote|help|what|how|can|do|need|looking|project)\b/i.test(text)
+    || GENERAL_TECH_KEYWORDS.some(keyword => ` ${normalizedText} `.includes(` ${normalizeText(keyword)} `))) return null;
+  return /^\p{L}[\p{L}' -]{0,79}$/iu.test(text.trim()) ? text.trim() : null;
+}
+
+function extractEmail(text) {
+  return text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)?.[0] || null;
+}
+
+function isValidEmail(email) {
+  return email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+}
+
+function isSkip(text) {
+  return /\b(skip|no thanks|rather not|prefer not|not now|continue without)\b/i.test(text);
+}
+
 export default function ViniChatbot({ triggerClassName = '' }) {
   const { viniAssistant, company, portfolioProjects, teamMembers, devProcess, techStack } = useSiteContent();
 
@@ -74,32 +104,123 @@ export default function ViniChatbot({ triggerClassName = '' }) {
 
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const stored = sessionStorage.getItem('vini_chat_messages');
-        if (stored) return JSON.parse(stored);
-      } catch {
-        // Fallback
-      }
-    }
-    return [{ role: 'bot', text: viniAssistant?.welcomeMessage || 'Hi, I’m Vini! How can I help you today?' }];
-  });
+  const [messages, setMessages] = useState(() => [
+    makeMessage('bot', viniAssistant?.welcomeMessage || 'Hi, I’m Vini! How can I help you today?'),
+  ]);
 
   const [isTyping, setIsTyping] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
   const messagesEndRef = useRef(null);
+  const [onboardingStep, setOnboardingStep] = useState('name');
+  const [pendingCustomer, setPendingCustomer] = useState({ name: '', email: '' });
+  const [profileSaved, setProfileSaved] = useState(false);
+  const [storageError, setStorageError] = useState('');
+  const sessionStartedRef = useRef(false);
+  const namePromptReminderRef = useRef(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        sessionStorage.setItem('vini_chat_messages', JSON.stringify(messages));
-      } catch {
-        // Ignored
-      }
-    }
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    if (!isOpen || sessionStartedRef.current) return undefined;
+    sessionStartedRef.current = true;
+    try {
+      sessionStorage.removeItem('vini_chat_messages');
+    } catch (error) {
+      console.warn('Could not clear legacy VINI chat history from browser storage.', error);
+    }
+    let active = true;
+    fetch('/api/vini/session', { credentials: 'same-origin', cache: 'no-store' })
+      .then(async response => {
+        if (!response.ok) throw new Error('Secure chat storage is unavailable.');
+        return response.json();
+      })
+      .then(data => {
+        if (!active) return;
+        if (data.profile) {
+          setPendingCustomer({ name: data.profile.name || '', email: data.profile.email || '' });
+          setProfileSaved(true);
+          setOnboardingStep('done');
+          const restored = data.messages.map(message => ({
+            message_id: message.message_id,
+            role: message.role,
+            text: message.content,
+          }));
+          const welcomeBack = makeMessage('bot', `Welcome back${data.profile.name ? `, ${data.profile.name}` : ''}! What can I help you with today?`);
+          setMessages(restored.length ? [...restored, welcomeBack] : [welcomeBack]);
+        } else {
+          setMessages(current => [
+            ...current,
+            makeMessage('bot', 'By the way, what should I call you? Sharing details is optional, and you can ask anything without them.'),
+          ]);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setMessages(current => [
+            ...current,
+            makeMessage('bot', 'By the way, what should I call you? Sharing details is optional, and you can ask anything without them.'),
+          ]);
+        }
+      });
+    return () => { active = false; };
+  }, [isOpen]);
+
+  const persistMessage = async message => {
+    if (!profileSaved) return;
+    try {
+      const response = await fetch('/api/vini/messages', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message_id: message.message_id,
+          role: message.role,
+          content: message.text,
+        }),
+      });
+      if (!response.ok) throw new Error('Chat history could not be saved.');
+    } catch (error) {
+      setStorageError(error.message);
+    }
+  };
+
+  const saveConsent = async conversation => {
+    const confirmation = makeMessage('bot', 'Thank you. I’ve securely saved the details and conversation you agreed to share. What would you like help with?');
+    const messagesToSave = [...conversation, confirmation].slice(-200).map(message => ({
+      message_id: message.message_id,
+      role: message.role,
+      content: message.text,
+    }));
+    try {
+      const response = await fetch('/api/vini/profile', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...pendingCustomer,
+          consent: true,
+          messages: messagesToSave,
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Secure saving is not available right now.');
+      setProfileSaved(true);
+      setStorageError('');
+      setOnboardingStep('done');
+      setMessages([...conversation, confirmation]);
+    } catch {
+      setStorageError('Secure saving is unavailable right now. Nothing was saved. You can try again or continue without saving.');
+    }
+  };
+
+  const declineConsent = conversation => {
+    setPendingCustomer({ name: '', email: '' });
+    setOnboardingStep('done');
+    setStorageError('');
+    setMessages([...conversation, makeMessage('bot', 'No problem. I won’t save your details or chat history. We can keep chatting without them.')]);
+  };
 
   // Audio tone notification
   const playNotificationSound = () => {
@@ -214,13 +335,86 @@ export default function ViniChatbot({ triggerClassName = '' }) {
     const query = (textToSend || input).trim();
     if (!query) return;
 
-    setMessages(prev => [...prev, { role: 'user', text: query }]);
+    const userMessage = makeMessage('user', query);
+    const conversation = [...messages, userMessage];
+    setMessages(conversation);
     setInput('');
     setIsTyping(true);
+    if (profileSaved) persistMessage(userMessage);
+
+    if (onboardingStep === 'consent' && /^(yes|yes please|save|agree|okay|ok)$/i.test(query)) {
+      setIsTyping(false);
+      saveConsent(conversation);
+      return;
+    }
+    if (onboardingStep === 'consent' && /^(no|no thanks|don't save|do not save|continue without saving)$/i.test(query)) {
+      setIsTyping(false);
+      declineConsent(conversation);
+      return;
+    }
 
     setTimeout(() => {
-      const reply = getBotResponse(query);
-      setMessages(prev => [...prev, { role: 'bot', text: reply }]);
+      let reply;
+      if (onboardingStep === 'name' && isSkip(query)) {
+        setOnboardingStep('done');
+        reply = 'Of course. You can ask me anything without sharing personal details.';
+      } else if (onboardingStep === 'name') {
+        const name = extractName(query);
+        const foundEmail = extractEmail(query);
+        const volunteeredEmail = foundEmail && (
+          query.trim() === foundEmail || /\b(my email|email is|reach me at)\b/i.test(query)
+        ) ? foundEmail : null;
+        if (name) {
+          const nextCustomer = {
+            ...pendingCustomer,
+            name,
+            ...(volunteeredEmail && isValidEmail(volunteeredEmail) ? { email: volunteeredEmail.toLowerCase() } : {}),
+          };
+          setPendingCustomer(nextCustomer);
+          const businessReply = /[?]|\b(website|web|software|mobile|app|automation|workflow|ai|chatbot|qa|testing|cloud|chrome|extension|consulting|service|pricing|cost|quote|timeline|portfolio|project|dashboard|crm|development)\b/i.test(query)
+            ? `${getBotResponse(query)}\n\n`
+            : '';
+          if (nextCustomer.email) {
+            setOnboardingStep('consent');
+            reply = `${businessReply}Thanks, ${name}. Would you like me to save your details and this conversation securely so our team can follow up? This is optional; you can also keep chatting without saving anything.`;
+          } else {
+            setOnboardingStep('email');
+            reply = `${businessReply}Nice to meet you, ${name}. If you’d like, what’s the best email to reach you? You can skip it or ask me anything instead.`;
+          }
+        } else if (volunteeredEmail && isValidEmail(volunteeredEmail)) {
+          setPendingCustomer(current => ({ ...current, email: volunteeredEmail.toLowerCase() }));
+          reply = 'Thanks, I have that. What name should I use for you? You can skip sharing it if you prefer.';
+        } else {
+          reply = getBotResponse(query);
+          if (!namePromptReminderRef.current) {
+            reply += '\n\nBy the way, what should I call you? Sharing your name is optional.';
+            namePromptReminderRef.current = true;
+          }
+        }
+      } else if (onboardingStep === 'email' && isSkip(query)) {
+        setOnboardingStep('consent');
+        reply = `No problem${pendingCustomer.name ? `, ${pendingCustomer.name}` : ''}. Would you like me to save the details you shared and this conversation securely so our team can follow up? This is optional.`;
+      } else if (onboardingStep === 'email') {
+        const email = extractEmail(query);
+        if (email && isValidEmail(email)) {
+          setPendingCustomer(current => ({ ...current, email: email.toLowerCase() }));
+          setOnboardingStep('consent');
+          const businessReply = /[?]|\b(website|web|software|mobile|app|automation|workflow|ai|chatbot|qa|testing|cloud|chrome|extension|consulting|service|pricing|cost|quote|timeline|portfolio|project|dashboard|crm|development)\b/i.test(query.replace(email, ''))
+            ? `${getBotResponse(query)}\n\n`
+            : '';
+          reply = `${businessReply}Thanks${pendingCustomer.name ? `, ${pendingCustomer.name}` : ''}. Would you like me to save your details and this conversation securely so our team can follow up? This is optional; you can keep chatting without saving anything.`;
+        } else if (query.includes('@') || (!/\s/.test(query) && /[._+-]/.test(query))) {
+          reply = 'That email doesn’t look quite right. Could you check it once? Sharing an email is optional, so you can also type “skip.”';
+        } else {
+          reply = `${getBotResponse(query)}\n\nYou can share an email if you’d like us to follow up, or type “skip.”`;
+        }
+      } else {
+        reply = getBotResponse(query);
+      }
+
+      const botMessage = makeMessage('bot', reply);
+      setMessages(current => [...current, botMessage]);
+      if (profileSaved) persistMessage(botMessage);
       setIsTyping(false);
       if (!isOpen) {
         setHasUnread(true);
@@ -289,7 +483,7 @@ export default function ViniChatbot({ triggerClassName = '' }) {
           </div>
 
           {/* Messages Container */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-sm bg-[#f8f7f1]">
+          <div className="chat-messages min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 space-y-3.5 text-sm bg-[#f8f7f1]">
             {messages.map((m, idx) => (
               <div
                 key={idx}
@@ -338,6 +532,20 @@ export default function ViniChatbot({ triggerClassName = '' }) {
             ))}
           </div>
 
+          {onboardingStep === 'consent' && (
+            <div className="flex flex-wrap gap-2 border-t border-[#e3dfd1] bg-[#fffdf8] px-3 py-2">
+              <button type="button" onClick={() => saveConsent(messages)} className="rounded-full bg-[#d5a649] px-3 py-1.5 text-xs font-semibold text-white">
+                Yes, save securely
+              </button>
+              <button type="button" onClick={() => declineConsent(messages)} className="rounded-full border border-[#ded8c8] px-3 py-1.5 text-xs font-semibold text-[#625543]">
+                No, continue without saving
+              </button>
+              <a href="/privacy-policy" className="self-center text-xs font-semibold text-[#46797e] underline underline-offset-2">Privacy details</a>
+            </div>
+          )}
+
+          {storageError && <p role="status" className="border-t border-[#e3dfd1] bg-[#fff8e9] px-3 py-2 text-xs leading-5 text-[#76551b]">{storageError}</p>}
+
           {/* Input Bar */}
           <form
             onSubmit={e => {
@@ -350,8 +558,9 @@ export default function ViniChatbot({ triggerClassName = '' }) {
               type="text"
               value={input}
               onChange={e => setInput(e.target.value)}
-              placeholder="Ask anything about our IT services..."
-              className="flex-1 rounded-xl border border-[#ded8c8] bg-[#f8f7f1] px-3.5 py-2 text-sm text-[#493a2e] focus:border-[#c49339] focus:outline-none"
+              inputMode={onboardingStep === 'email' ? 'email' : undefined}
+              placeholder={onboardingStep === 'name' ? 'Your name (optional), or ask a question...' : onboardingStep === 'email' ? 'Your email (optional), or ask a question...' : 'Ask anything about our IT services...'}
+              className="min-w-0 flex-1 rounded-xl border border-[#ded8c8] bg-[#f8f7f1] px-3.5 py-2 text-sm text-[#493a2e] focus:border-[#c49339] focus:outline-none"
             />
             <button
               type="submit"

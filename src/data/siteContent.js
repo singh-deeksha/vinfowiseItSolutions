@@ -25,6 +25,7 @@ import {
   MessageSquareText,
   PhoneCall,
   CircleCheck,
+  Linkedin,
 } from 'lucide-react';
 
 export const company = {
@@ -41,7 +42,7 @@ export const company = {
   responseTime: "Average response time within 24 business hours",
   businessHours: "Monday to Friday, 9:00 AM - 6:00 PM",
   social: {
-    LinkedIn: "https://linkedin.com",
+    LinkedIn: "https://www.linkedin.com/company/vinfowiseitsolutions",
     Instagram: "https://instagram.com",
     Facebook: "https://facebook.com",
   },
@@ -576,6 +577,7 @@ export const faqs = [
 export const contactCards = [
   { label: "Email", value: company.email, icon: MessageSquareText, href: `mailto:${company.email}` },
   { label: "WhatsApp", value: company.phone, icon: PhoneCall, href: getWhatsAppUrl() },
+  { label: "LinkedIn", value: "Vinfowise IT Solutions", icon: Linkedin, href: company.social.LinkedIn, external: true },
   { label: "Office", value: company.address, icon: Building2 },
   { label: "Security", value: "NDA friendly, GDPR ready, data-protection focused", icon: CircleCheck },
 ];
