@@ -16,13 +16,13 @@ export default function CommandCenterCard() {
       </div>
 
       {/* Metrics Row */}
-      <div className="mt-5 grid grid-cols-3 divide-x divide-[#e3dfd1] border-y border-[#e3dfd1] py-3">
+      <div className="mt-5 grid grid-cols-[repeat(auto-fit,minmax(min(100%,5rem),1fr))] divide-x divide-[#e3dfd1] border-y border-[#e3dfd1] py-3">
         <div className="px-3 first:pl-0">
-          <div className="flex items-center gap-2 text-[#75886c]"><Activity size={16} /><span className="text-xl font-black text-[#493a2e]">24</span></div>
+          <div className="flex items-center gap-2 text-[#5b8d92]"><Activity size={16} /><span className="text-xl font-black text-[#493a2e]">24</span></div>
           <div className="mt-1 text-xs text-[#817766]">Leads</div>
         </div>
         <div className="px-3">
-          <div className="flex items-center gap-2 text-[#75886c]"><CheckCircle2 size={16} /><span className="text-xl font-black text-[#493a2e]">91%</span></div>
+          <div className="flex items-center gap-2 text-[#5b8d92]"><CheckCircle2 size={16} /><span className="text-xl font-black text-[#493a2e]">91%</span></div>
           <div className="mt-1 text-xs text-[#817766]">Tasks</div>
         </div>
         <div className="px-3 last:pr-0">
@@ -42,10 +42,10 @@ export default function CommandCenterCard() {
           <div>
             <div className="flex justify-between text-xs font-medium">
               <span className="text-[#625543]">Website project</span>
-              <span className="text-[#75886c]">82%</span>
+              <span className="text-[#54868d]">82%</span>
             </div>
             <div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-[#e8e4d8]">
-              <div className="h-full rounded-full bg-[#aebd9f]" style={{ width: '82%' }} />
+              <div className="h-full rounded-full bg-[#8eb7bd]" style={{ width: '82%' }} />
             </div>
           </div>
 

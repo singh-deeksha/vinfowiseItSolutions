@@ -265,7 +265,7 @@ export default function ViniChatbot({ triggerClassName = '' }) {
           aria-label={`${botName} Assistant`}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-[#e3dfd1] bg-gradient-to-r from-[#e8eee2] via-[#f5f0e2] to-[#f6e2b9] px-4 py-3.5 text-[#493a2e]">
+          <div className="flex items-center justify-between border-b border-[#d9e3df] bg-gradient-to-r from-[#e8eee2] via-[#edf1eb] to-[#e6efec] px-4 py-3.5 text-[#493a2e]">
             <div className="flex items-center gap-3">
               <span className="bot-icon-wrap size-10">
                 <img src={botAvatar} alt={botName} className="size-full object-cover" />
@@ -296,7 +296,7 @@ export default function ViniChatbot({ triggerClassName = '' }) {
                 className={`flex gap-2.5 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {m.role === 'bot' && (
-                  <div className="size-7 shrink-0 rounded-full bg-[#e8eee2] flex items-center justify-center text-[#718365] mt-0.5">
+                  <div className="size-7 shrink-0 rounded-full bg-[#e5efee] flex items-center justify-center text-[#54868d] mt-0.5">
                     <Bot size={15} />
                   </div>
                 )}

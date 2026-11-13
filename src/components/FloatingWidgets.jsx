@@ -7,7 +7,7 @@ export default function FloatingWidgets() {
     <div className="fixed bottom-5 right-5 z-40 flex flex-col items-center gap-3">
       <Link
         to="/contact"
-        className="focus-ring flex size-14 items-center justify-center rounded-full border border-[#d8d6c9] bg-[#e8eee2] text-[#718365] transition-colors hover:border-[#c6953b]"
+        className="focus-ring flex size-14 items-center justify-center rounded-full border border-[#cbdcda] bg-[#e5efee] text-[#54868d] transition-colors hover:border-[#c6953b]"
         aria-label="Contact Vinfowise"
         title="Contact Vinfowise"
       >

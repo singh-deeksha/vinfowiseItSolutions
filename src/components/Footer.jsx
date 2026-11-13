@@ -7,7 +7,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-[#e3dfd1] bg-[#eeefe7] text-[#625543]">
-      <div className="container-wide grid gap-10 py-12 md:grid-cols-[1.25fr_0.8fr_1fr] md:py-16">
+      <div className="container-wide grid gap-10 py-12 lg:grid-cols-[1.25fr_0.8fr_1fr] lg:py-16">
         <div>
           <Link to="/" className="inline-flex items-center gap-3">
             <img className="size-12 rounded-xl" src="/vinfowise-emblem.svg" alt="" />

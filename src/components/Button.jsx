@@ -5,9 +5,9 @@ const variantStyles = {
   primary:
     'rounded-xl bg-[#c6953b] text-[#fffdf8] hover:bg-[#b98731]',
   secondary:
-    'rounded-xl border border-[#d7d4c7] bg-[#fffdf8] text-[#554632] hover:border-[#9ba98d] hover:bg-[#edf0e7] hover:text-[#65785b]',
+    'rounded-xl border border-[#cbdcda] bg-[#fffdf8] text-[#554632] hover:border-[#76a5aa] hover:bg-[#eaf2f0] hover:text-[#46797e]',
   dark:
-    'rounded-xl bg-[#e6ebdf] text-[#4c5d44] hover:bg-[#d8e1cf]',
+    'rounded-xl bg-[#e5efee] text-[#466b70] hover:bg-[#d5e6e4]',
 };
 
 export default function Button({

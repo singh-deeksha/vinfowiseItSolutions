@@ -2,11 +2,27 @@
 
 @layer utilities {
   .container-wide {
-    width: min(1180px, 100% - 32px);
+    width: min(1180px, calc(100% - clamp(24px, 6vw, 48px)));
     margin-inline: auto;
   }
   .section-pad {
     padding-block: clamp(2.75rem, 5.5vw, 5rem);
+  }
+  .responsive-two-column-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
+  }
+  .service-card {
+    container-type: inline-size;
+  }
+  .service-card-details {
+    display: grid;
+    gap: 1rem;
+  }
+  @container (min-width: 26rem) {
+    .service-card-details {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
   }
   .focus-ring:focus-visible {
     outline-offset: 3px;

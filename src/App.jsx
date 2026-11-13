@@ -14,7 +14,7 @@ import SEO from './components/SEO.jsx';
 import { useSiteContent } from './context/SiteContentContext.jsx';
 
 const pageWrap = 'container-wide py-14 sm:py-20 lg:py-24';
-const cardClass = 'rounded-2xl border border-[#e3dfd1] bg-[#fffdf8] p-6';
+const cardClass = 'rounded-2xl border border-[#e3dfd1] border-l-2 border-l-[#8eb7bd] bg-[#fffdf8] p-6';
 const mutedText = 'text-[#706557]';
 
 function Eyebrow({ children }) {
@@ -25,7 +25,7 @@ function PageIntro({ eyebrow, title, description }) {
   return (
     <div className="max-w-4xl">
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-tight text-[#493a2e] sm:text-5xl lg:text-7xl">{title}</h1>
+      <h1 className="mt-5 text-[clamp(2.25rem,5vw,4.5rem)] font-black leading-[1.08] tracking-tight text-[#493a2e]">{title}</h1>
       {description && <p className={`mt-6 max-w-3xl text-lg leading-8 ${mutedText}`}>{description}</p>}
     </div>
   );
@@ -35,7 +35,7 @@ function SectionHeading({ eyebrow, title, description }) {
   return (
     <div className="max-w-3xl">
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h2 className="mt-3 text-3xl font-black tracking-tight text-[#493a2e] sm:text-4xl">{title}</h2>
+      <h2 className="mt-3 text-[clamp(1.75rem,3vw,2.25rem)] font-black tracking-tight text-[#493a2e]">{title}</h2>
       {description && <p className={`mt-4 leading-7 ${mutedText}`}>{description}</p>}
     </div>
   );
@@ -57,13 +57,13 @@ function StatsGrid({ metrics }) {
 function HeroSection() {
   const { company, heroContent, metrics } = useSiteContent();
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#e8eee2] via-[#f5f0e2] to-[#f7e4c2]">
-      <div className="pointer-events-none absolute -left-32 top-20 size-96 rounded-full bg-[#a9b99a]/40 blur-3xl" />
-      <div className="pointer-events-none absolute -right-32 bottom-0 size-96 rounded-full bg-[#e6b95d]/30 blur-3xl" />
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#e8eee2] via-[#eef1e8] to-[#e6efec]">
+      <div className="pointer-events-none absolute -left-32 top-20 size-96 rounded-full bg-[#a9b99a]/30 blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 bottom-0 size-96 rounded-full bg-[#8eb7bd]/20 blur-3xl" />
       <div className={`${pageWrap} relative grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]`}>
         <div>
           <Eyebrow>{heroContent.eyebrow}</Eyebrow>
-          <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[1.06] tracking-tight text-[#493a2e] sm:text-6xl lg:text-7xl">
+          <h1 className="mt-5 max-w-3xl text-[clamp(2.25rem,6vw,4.5rem)] font-black leading-[1.06] tracking-tight text-[#493a2e]">
             {company.tagline}
           </h1>
           <p className={`mt-6 max-w-2xl text-lg leading-8 ${mutedText}`}>{heroContent.description}</p>
@@ -96,17 +96,21 @@ function HeroSection() {
 function ServiceCards({ limit }) {
   const { services } = useSiteContent();
   return (
-    <div className="mt-9 grid gap-4 sm:grid-cols-2">
+    <div className="mt-9 grid gap-4 responsive-two-column-grid">
       {services.slice(0, limit || services.length).map(service => {
         const Icon = service.icon;
         return (
-          <Link key={service.slug} to={service.path} className={`${cardClass} group transition-colors duration-200 hover:border-[#c89a43]`}>
-            <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-[#e8eee2] text-[#75886c]">
+          <Link key={service.slug} to={service.path} className={`${cardClass} service-card group transition-colors duration-200 hover:border-[#c89a43]`}>
+            <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-[#e5efee] text-[#54868d]">
               <Icon size={25} />
             </span>
-            <h3 className="mt-5 text-xl font-bold text-[#493a2e]">{service.title}</h3>
-            <p className={`mt-3 text-sm leading-7 ${mutedText}`}>{service.summary}</p>
-            <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#9a752c]">View Details <ArrowRight size={16} /></span>
+            <div className="service-card-details mt-5">
+              <div className="min-w-0">
+                <h3 className="text-xl font-bold text-[#493a2e]">{service.title}</h3>
+                <p className={`mt-3 text-sm leading-7 ${mutedText}`}>{service.summary}</p>
+              </div>
+              <span className="inline-flex items-center gap-2 text-sm font-bold text-[#9a752c]">View Details <ArrowRight size={16} /></span>
+            </div>
           </Link>
         );
       })}
@@ -120,7 +124,7 @@ function Principles({
   description = 'How we keep enterprise delivery reliable.',
 }) {
   return (
-    <section className="border-y border-[#e3dfd1] bg-[#eef0e8]">
+    <section className="border-y border-[#d9e3df] bg-[#edf1eb]">
       <div className={pageWrap}>
         <SectionHeading eyebrow="Operating principles" title={title} description={description} />
         <div className="mt-9 grid gap-4 sm:grid-cols-2">
@@ -128,7 +132,7 @@ function Principles({
             const Icon = item.icon;
             return (
               <article key={item.title} className={cardClass}>
-                <Icon size={25} className="text-[#c49339]" />
+                <Icon size={25} className="text-[#5b8d92]" />
                 <h3 className="mt-4 text-lg font-bold text-[#493a2e]">{item.title}</h3>
                 <p className={`mt-2 text-sm leading-7 ${mutedText}`}>{item.text}</p>
               </article>
@@ -143,7 +147,7 @@ function Principles({
 function CaseStudyCards({ limit }) {
   const { caseStudies } = useSiteContent();
   return (
-    <div className="mt-9 grid gap-4 md:grid-cols-2">
+    <div className="mt-9 grid gap-4 responsive-two-column-grid">
       {caseStudies.slice(0, limit || caseStudies.length).map(study => (
         <article key={study.title} className={cardClass}>
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -165,11 +169,11 @@ function TeamCards() {
     <div className="mt-9 grid gap-5 md:grid-cols-2">
       {teamMembers.map(member => (
         <article key={member.name} className={`${cardClass} overflow-hidden p-0`}>
-          <div className="h-1 bg-gradient-to-r from-[#94a987] via-[#c69a43] to-[#f0cf83]" />
+          <div className="h-1 bg-gradient-to-r from-[#94a987] via-[#8eb7bd] to-[#f0cf83]" />
           <div className="p-6 sm:p-7">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#8c794d]">{member.specialty}</p>
             <div className="mt-5 flex items-center gap-4">
-              <img src={member.image} alt={member.name} className="size-16 rounded-2xl object-cover ring-2 ring-[#c6d0bc]" loading="lazy" />
+              <img src={member.image} alt={member.name} className="size-16 rounded-2xl object-cover ring-2 ring-[#b8d0ce]" loading="lazy" />
               <div className="min-w-0">
                 <h3 className="text-xl font-bold text-[#493a2e]">{member.name}</h3>
                 {member.leadershipRole && <p className="mt-1 text-xs font-bold uppercase tracking-wider text-[#89651f]">{member.leadershipRole}</p>}
@@ -204,7 +208,7 @@ function Testimonials() {
 
 function CallToAction() {
   return (
-    <section className="border-y border-[#e3dcc9] bg-gradient-to-r from-[#e8eee2] via-[#f5f0e2] to-[#f7e4c2]">
+    <section className="border-y border-[#d9e3df] bg-gradient-to-r from-[#e8eee2] via-[#edf1eb] to-[#e6efec]">
       <div className={`${pageWrap} flex flex-col items-start justify-between gap-7 md:flex-row md:items-center`}>
         <div className="max-w-3xl">
           <Eyebrow>Ready to scale?</Eyebrow>
@@ -238,7 +242,7 @@ function HomePage() {
           <CaseStudyCards limit={4} />
           <div className="mt-8"><Button to="/portfolio" variant="secondary">Explore Portfolio</Button></div>
         </section>
-        <section className="border-y border-[#e3dfd1] bg-[#eef0e8]">
+        <section className="border-y border-[#d9e3df] bg-[#edf1eb]">
           <div className={pageWrap}>
             <SectionHeading eyebrow="Client feedback" title="Built on trust, clear delivery, and useful outcomes." />
             <Testimonials />
@@ -281,7 +285,7 @@ function AboutPage() {
             ))}
           </div>
         </section>
-        <section className="border-y border-[#e3dfd1] bg-[#eef0e8]">
+        <section className="border-y border-[#d9e3df] bg-[#edf1eb]">
           <div className={pageWrap}>
             <SectionHeading eyebrow="Team members" title={about.teamIntro} description="Meet the specialists behind Vinfowise IT Solutions across QA, technology leadership, full stack engineering, and AI-powered product development." />
             <TeamCards />
@@ -438,9 +442,9 @@ function ContactPage() {
     <>
       <SEO title="Contact" description="Tell us what you are building and discuss your next technology project." />
       <section className="bg-gradient-to-br from-[#e8eee2] via-[#f5f0e2] to-[#f7e4c2]"><div className={pageWrap}><PageIntro eyebrow="Contact" title="Let’s plan your next digital milestone." description="Tell us about your goals, timeline, and the challenges you want to solve." /></div></section>
-      <main className={`${pageWrap} grid gap-8 lg:grid-cols-[0.8fr_1.2fr]`}>
-        <div className="space-y-4">{contactCards.map(card => { const Icon = card.icon; return <article key={card.label} className={`${cardClass} flex gap-4`}><Icon size={22} className="mt-1 shrink-0 text-[#8c794d]" /><div><h2 className="font-bold text-[#493a2e]">{card.label}</h2>{card.href ? <a href={card.href} className="mt-1 block break-words text-sm text-[#706557] hover:text-[#75886c]">{card.value}</a> : <p className="mt-1 text-sm text-[#706557]">{card.value}</p>}</div></article>; })}</div>
-        <form onSubmit={submit} className={`${cardClass} grid gap-5 sm:grid-cols-2`}>
+      <main className={`${pageWrap} grid min-w-0 gap-8 lg:grid-cols-[0.8fr_1.2fr]`}>
+        <div className="min-w-0 space-y-4">{contactCards.map(card => { const Icon = card.icon; return <article key={card.label} className={`${cardClass} flex min-w-0 gap-4`}><Icon size={22} className="mt-1 shrink-0 text-[#8c794d]" /><div className="min-w-0"><h2 className="font-bold text-[#493a2e]">{card.label}</h2>{card.href ? <a href={card.href} className="overflow-wrap-anywhere mt-1 block text-sm text-[#706557] hover:text-[#75886c]">{card.value}</a> : <p className="mt-1 text-sm text-[#706557]">{card.value}</p>}</div></article>; })}</div>
+        <form onSubmit={submit} className={`${cardClass} grid min-w-0 gap-5 sm:grid-cols-2`}>
           <label className="text-sm font-semibold text-[#625543]">Full name<input name="name" required autoComplete="name" className="mt-2 w-full rounded-xl border border-[#ded8c8] bg-[#fffdf8] px-4 py-3 text-[#493a2e] outline-none focus:border-[#c49339]" /></label>
           <label className="text-sm font-semibold text-[#625543]">Work email<input name="email" type="email" required autoComplete="email" className="mt-2 w-full rounded-xl border border-[#ded8c8] bg-[#fffdf8] px-4 py-3 text-[#493a2e] outline-none focus:border-[#c49339]" /></label>
           <label className="text-sm font-semibold text-[#625543] sm:col-span-2">Service of interest<select name="service" className="mt-2 w-full rounded-xl border border-[#ded8c8] bg-[#fffdf8] px-4 py-3 text-[#493a2e] outline-none focus:border-[#c49339]">{serviceInterestOptions.map(option => <option key={option}>{option}</option>)}</select></label>

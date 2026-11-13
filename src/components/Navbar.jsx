@@ -54,8 +54,8 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `rounded-md px-3 py-2 text-sm font-semibold transition lg:whitespace-nowrap ${
                     isActive || isServicesActive
-                      ? 'bg-[#e7ecdf] text-[#5f7255]'
-                      : 'text-[#625543] hover:bg-[#f0f1e9] hover:text-[#9a752c]'
+                      ? 'bg-[#e2eeec] text-[#4c7e83]'
+                      : 'text-[#625543] hover:bg-[#edf3f0] hover:text-[#4c7e83]'
                   }`
                 }
               >
@@ -104,8 +104,8 @@ export default function Navbar() {
                   className={({ isActive }) =>
                     `rounded-lg px-4 py-3 text-base font-semibold transition ${
                       isActive || isServicesActive
-                        ? 'bg-[#e7ecdf] text-[#5f7255]'
-                        : 'text-[#625543] hover:bg-[#f0f1e9]'
+                        ? 'bg-[#e2eeec] text-[#4c7e83]'
+                        : 'text-[#625543] hover:bg-[#edf3f0]'
                     }`
                   }
                 >
