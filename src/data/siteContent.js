@@ -31,7 +31,7 @@ export const company = {
   name: "Vinfowise IT Solutions",
   industry: "IT Services, Software Development, Web Development, Automation, and Digital Solutions",
   tagline: "Empowering businesses through scalable digital solutions.",
-  email: "singhdeeksha2426@gmail.com",
+  email: "vinfowiseitsolutions@gmail.com",
   phone: "Available through email and WhatsApp inquiry",
   whatsapp: "",
   address: "Mohali, Chandigarh - remote and in-person consultations by appointment",
